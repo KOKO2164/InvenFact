@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('proveedor_id')->constrained('proveedores')
                 ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('trabajador_id')->constrained('trabajadores')
+            $table->foreignId('trabajador_id')->constrained('users')
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('estado_id')->constrained('estados')
                 ->onUpdate('cascade')->onDelete('cascade');

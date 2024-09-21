@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class Trabajador extends Authenticatable
+class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -17,11 +17,10 @@ class Trabajador extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $table = 'trabajadores';
     protected $fillable = [
         'nombre',
-        'correo',
-        'contrasena',
+        'email',
+        'password',
         'rol_id',
         'estado'
     ];
@@ -32,7 +31,7 @@ class Trabajador extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'contrasena'
+        'password'
     ];
 
     public function rol()

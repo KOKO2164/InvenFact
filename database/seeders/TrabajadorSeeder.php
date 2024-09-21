@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Trabajador;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,6 +14,6 @@ class TrabajadorSeeder extends Seeder
      */
     public function run(): void
     {
-        Trabajador::factory(3)->create();
+        User::factory(3)->create();
     }
 }

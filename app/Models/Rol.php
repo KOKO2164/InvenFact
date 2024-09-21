@@ -19,6 +19,6 @@ class Rol extends Model
 
     public function trabajadores()
     {
-        return $this->hasMany(Trabajador::class);
+        return $this->hasMany(User::class);
     }
 }

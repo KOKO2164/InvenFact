@@ -4,7 +4,8 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\Trabajador;
+//use App\Models\Trabajador;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -17,10 +18,10 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(RolSeeder::class);
 
-        Trabajador::create([
+        User::create([
             'nombre' => 'Rodrigo',
-            'correo' => 'brrodrigo.2164@gmail.com',
-            'contrasena' => Hash::make('12345678'),
+            'email' => 'brrodrigo.2164@gmail.com',
+            'password' => Hash::make('12345678'),
             'rol_id' => 1,
             'estado' => true
         ]);
