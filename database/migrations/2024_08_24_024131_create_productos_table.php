@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('stock')->default(0);
             $table->string('codigoUbicacion', 6)->nullable();
             $table->string('imagen', 255)->nullable();
-            $table->boolean('estado')->default(true);
+            $table->boolean('activo')->default(true);
             $table->foreignId('categoria_id')->constrained('categorias')
                 ->onUpdate('cascade')->onDelete('restrict');
             $table->timestamps();

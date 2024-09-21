@@ -14,11 +14,9 @@ return new class extends Migration
         Schema::create('trabajadores', function (Blueprint $table) {
             $table->id();
             $table->string('nombre', 100);
-            $table->string('correo')->unique();
-            $table->string('contrasena');
-            $table->foreignId('rol_id')->constrained('roles')->onUpdate('restrict')->onDelete('restrict');
-            $table->boolean('estado')->default(true);
-            $table->timestamps();
+            $table->string('email')->unique();
+            $table->string('password');
+            $table->rememberToken();
         });
     }
 

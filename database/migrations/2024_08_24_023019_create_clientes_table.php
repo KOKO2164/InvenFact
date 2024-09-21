@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('clientes', function (Blueprint $table) {
             $table->id();
             $table->string('nombre', 255);
-            $table->string('correo', 100)->unique()->nullable();
+            $table->string('email', 100)->unique()->nullable();
             $table->string('telefono', 20)->nullable();
             $table->string('direccion', 255)->nullable();
-            $table->boolean('estado')->default(true);
+            $table->boolean('activo')->default(true);
             $table->timestamps();
         });
     }

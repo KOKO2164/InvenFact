@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('nombre', 100);
             $table->string('ruc', 11)->unique();
-            $table->string('correo', 100)->nullable();
+            $table->string('email', 100)->nullable();
             $table->string('telefono', 20)->nullable();
             $table->string('direccion', 255)->nullable();
-            $table->boolean('estado')->default(true);
+            $table->boolean('activo')->default(true);
             $table->timestamps();
         });
     }
