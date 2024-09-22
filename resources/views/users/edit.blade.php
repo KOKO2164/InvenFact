@@ -20,22 +20,24 @@
                 @method('PATCH')
                 <div class="form-group">
                     <label for="nombre">Nombre</label>
-                    <input type="text" name="nombre" id="nombre" class="form-control" placeholder="Ingrese el nombre del trabajador" value="{{ $trabajador->nombre }}">
+                    <input type="text" name="nombre" id="nombre" class="form-control"
+                        placeholder="Ingrese el nombre del trabajador" value="{{ $trabajador->nombre }}">
+                    @error('nombre')
+                        <div class="invalid-feedback">
+                            <strong>{{ $message }}</strong>
+                        </div>
+                    @enderror
                 </div>
-                @error('nombre')
-                    <div class="alert alert-danger">
-                        <strong>{{ $message }}</strong>
-                    </div>
-                @enderror
                 <div class="form-group">
                     <label for="email">Correo</label>
-                    <input type="email" name="email" id="email" class="form-control" placeholder="Ingrese el correo del trabajador" value="{{ $trabajador->email }}">
+                    <input type="email" name="email" id="email" class="form-control"
+                        placeholder="Ingrese el correo del trabajador" value="{{ $trabajador->email }}">
+                    @error('email')
+                        <div class="invalid-feedback">
+                            <strong>{{ $message }}</strong>
+                        </div>
+                    @enderror
                 </div>
-                @error('email')
-                    <div class="alert alert-danger">
-                        <strong>{{ $message }}</strong>
-                    </div>
-                @enderror
                 {{-- <div class="form-group">
                     <label for="password">Contraseña</label>
                     <input type="password" name="password" id="password" class="form-control" placeholder="Ingrese la contraseña del trabajador">

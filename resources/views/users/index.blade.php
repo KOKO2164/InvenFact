@@ -49,15 +49,23 @@
                                     <i class="fas fa-pencil-alt"></i>
                                 </a>
                                 @if ($user->estado)
-                                    <form action="{{ route('trabajadores.disable', $user) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        @method('PATCH')
-                                        <button class="btn btn-danger" type="submit">
+                                    @if ($user->id === auth()->user()->id)
+                                        <button class="btn btn-danger" disabled>
                                             <i class="fas fa-user-slash"></i>
                                         </button>
-                                    </form>
+                                    @else
+                                        <form action="{{ route('trabajadores.disable', $user) }}" method="POST"
+                                            class="d-inline">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button class="btn btn-danger" type="submit">
+                                                <i class="fas fa-user-slash"></i>
+                                            </button>
+                                        </form>
+                                    @endif
                                 @else
-                                    <form action="{{ route('trabajadores.enable', $user) }}" method="POST" class="d-inline">
+                                    <form action="{{ route('trabajadores.enable', $user) }}" method="POST"
+                                        class="d-inline">
                                         @csrf
                                         @method('PATCH')
                                         <button class="btn btn-success" type="submit">

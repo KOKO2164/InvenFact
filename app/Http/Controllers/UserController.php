@@ -31,13 +31,13 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        try {
-            $request->validate([
-                'nombre' => 'required|string',
-                'email' => 'required|email|unique:users',
-                'password' => 'required|min:8'
-            ]);
+        $request->validate([
+            'nombre' => 'required|string',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:8'
+        ]);
 
+        try {
             User::create([
                 'nombre' => $request->nombre,
                 'email' => $request->email,
@@ -66,12 +66,12 @@ class UserController extends Controller
      */
     public function update(Request $request, User $trabajador)
     {
-        try {
-            $request->validate([
-                'nombre' => 'required|string',
-                'email' => 'required|email|unique:users,email,' . $trabajador->id
-            ]);
+        $request->validate([
+            'nombre' => 'required|string',
+            'email' => 'required|email|unique:users,email,' . $trabajador->id
+        ]);
 
+        try {
             $trabajador->update([
                 'nombre' => $request->nombre,
                 'email' => $request->email,
