@@ -298,6 +298,16 @@ return [
             'text' => 'Gestionar Usuarios',
             'route'  => 'trabajadores.index',
             'icon' => 'fas fa-fw fa-users',
+        ],
+        [
+            'text' => 'Gestionar Proveedores',
+            'route'  => 'proveedores.index',
+            'icon' => 'fas fa-fw fa-boxes',
+        ],
+        [
+            'text' => 'Gestionar Categorias',
+            'route'  => 'categorias.index',
+            'icon' => 'fas fa-fw fa-th',
         ]
     ],
 
