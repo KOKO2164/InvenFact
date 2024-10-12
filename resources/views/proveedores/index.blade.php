@@ -84,6 +84,7 @@
                     @endforeach
                 </tbody>
             </table>
+            {!! $proveedores->links('pagination::bootstrap-4') !!}
         </div>
     </div>
 @stop

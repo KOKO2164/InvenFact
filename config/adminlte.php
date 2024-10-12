@@ -308,6 +308,11 @@ return [
             'text' => 'Gestionar Categorias',
             'route'  => 'categorias.index',
             'icon' => 'fas fa-fw fa-th',
+        ],
+        [
+            'text' => 'Gestionar Productos',
+            'route'  => 'productos.index',
+            'icon' => 'fas fa-truck-loading',
         ]
     ],
 

@@ -9,7 +9,6 @@ class Producto extends Model
 {
     use HasFactory;
     protected $table = 'productos'; 
-    public $timestamps = false;
     protected $fillable = ["nombre", "descripcion", "precio", "stock", "codigoUbicacion", "imagen", "estado", "categoria_id"];
     public function categoria()
     {

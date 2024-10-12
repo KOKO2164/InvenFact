@@ -20,9 +20,8 @@ class LoginController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
-        Log::info($credentials);
         if (Auth::attempt($credentials)) {
-            return redirect('/');
+            return redirect('/home');
         }
 
         return back()->withErrors([
@@ -34,6 +33,6 @@ class LoginController extends Controller
     {
         Auth::guard('web')->logout();
 
-        return redirect('/');
+        return redirect('/home');
     }
 }

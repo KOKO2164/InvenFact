@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(RolSeeder::class);
         $this->call(ProveedorSeeder::class);
+        $this->call(CategoriaSeeder::class);
+        $this->call(ProductoSeeder::class);
         User::create([
             'nombre' => 'Rodrigo',
             'email' => 'brrodrigo.2164@gmail.com',
