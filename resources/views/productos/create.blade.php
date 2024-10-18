@@ -64,7 +64,13 @@
                 @enderror
                 <div class="form-group">
                     <label for="imagen">Subir Imagen</label>
-                    <input type="file" name="imagen" id="imagen" class="form-control" placeholder="Ingrese la imagen del Producto">
+                    <input 
+                        type="file" 
+                        name="imagen" 
+                        id="imagen" 
+                        class="form-control" 
+                        accept=".jpg, .jpeg, .png" 
+                        placeholder="Ingrese la imagen del Producto">
                 </div>
                 @error('imagen')
                     <div class="alert alert-danger">
@@ -80,8 +86,7 @@
                                 name="categoria_id" 
                                 id="categoria_{{ $categoria->id }}" 
                                 value="{{ $categoria->id }}" 
-                                class="form-check-input"
-                            >
+                                class="form-check-input">
                             <label for="categoria_{{ $categoria->id }}" class="form-check-label">
                                 {{ $categoria->nombre }} <!-- Asumiendo que 'nombre' es el campo que deseas mostrar -->
                             </label>

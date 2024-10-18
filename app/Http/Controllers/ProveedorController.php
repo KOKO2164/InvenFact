@@ -49,8 +49,23 @@ class ProveedorController extends Controller
             ]);
             return redirect()->route('proveedores.index')->with('success', 'Proveedor creado correctamente');
         } catch (\Exception $e) {
-            Log::error($e->getMessage());
-            return redirect()->route('proveedores.index')->with('error', 'Ocurrió un error al crear el Proveedor');
+            $errorMessages = $e->getMessage();
+            $previousException = $e->getPrevious();
+            $errorCount = 0;
+
+            while ($previousException) {
+                $errorCount++;
+                $errorMessages .= "\n" . $previousException->getMessage(); // Concatenar los mensajes de las excepciones anteriores
+                $previousException = $previousException->getPrevious();
+            }
+
+            if ($errorCount > 0) {
+                $errorMessages .= " ({$errorCount} more errors)";
+            }
+
+            Log::error($errorMessages);
+
+            return redirect()->route('proveedores.index')->with('error', $errorMessages);
         }
     }
 

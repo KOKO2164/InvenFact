@@ -56,12 +56,12 @@ class ProductoController extends Controller
     {
         try {
             $request->validate([
-                'nombre' => 'required|string',
+                'nombre' => 'required|string|unique:productos',
                 'descripcion' => 'required|string',
                 'precio' => 'required|numeric|min:1',
                 'stock' => 'required|numeric|min:1',
                 'codigoUbicacion' => 'required|string',
-                'imagen' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'imagen' => 'required|image|mimes:jpeg,png,jpg|max:2048',
                 'categoria_id' => 'required|numeric'
             ]);
             
