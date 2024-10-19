@@ -17,14 +17,20 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(RolSeeder::class);
+        $this->call(ProveedorSeeder::class);
+        $this->call(CategoriaSeeder::class);
+        $this->call(ProductoSeeder::class);
 
         User::create([
-            'nombre' => 'Rodrigo',
+            'name' => 'Rodrigo Bohorquez',
+            'dni' => '76407729',
+            'fecha_nacimiento' => '2004-06-21',
             'email' => 'brrodrigo.2164@gmail.com',
-            'password' => Hash::make('12345678'),
+            'password' => bcrypt('12345678'),
             'rol_id' => 1,
             'estado' => true
         ]);
+        $this->call(UserSeeder::class);
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([

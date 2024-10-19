@@ -257,7 +257,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'home',
+    'dashboard_url' => '/',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
@@ -298,6 +298,21 @@ return [
             'text' => 'Gestionar Usuarios',
             'route'  => 'trabajadores.index',
             'icon' => 'fas fa-fw fa-users',
+        ],
+        [
+            'text' => 'Gestionar Proveedores',
+            'route'  => 'proveedores.index',
+            'icon' => 'fas fa-fw fa-boxes',
+        ],
+        [
+            'text' => 'Gestionar Categorias',
+            'route'  => 'categorias.index',
+            'icon' => 'fas fa-fw fa-th',
+        ],
+        [
+            'text' => 'Gestionar Productos',
+            'route'  => 'productos.index',
+            'icon' => 'fas fa-truck-loading',
         ]
     ],
 

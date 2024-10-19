@@ -18,7 +18,7 @@
         <div class="card-header">
             <div class="row">
                 <div class="col">
-                    <input type="text" class="form-control w-50" placeholder="Ingrese el nombre del usuario">
+                    <input type="text" class="form-control" placeholder="Ingrese el nombre del usuario">
                 </div>
                 <div class="col d-flex justify-content-end">
                     <a href="{{ route('trabajadores.create') }}" class="btn btn-primary">
@@ -27,20 +27,25 @@
                 </div>
             </div>
         </div>
-        <div class="card-body table-reponsive p-0">
+        <div class="p-0 card-body table-reponsive">
             <table class="table table-striped table-valign-middle">
                 <thead>
                     <tr>
+                        <th>DNI</th>
                         <th>Nombre</th>
                         <th>Correo</th>
+                        <th>Fecha de Nacimiento</th>
+                        <th>Rol</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($users as $user)
                         <tr>
-                            <td>{{ $user->nombre }}</td>
+                            <td>{{ $user->dni }}</td>
+                            <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
+                            <td>{{ \Carbon\Carbon::parse($user->fecha_nacimiento)->format('d/m/Y') }}</td>
                             <td>
                                 <span class="badge badge-primary">{{ $user->rol->nombre }}</span>
                             </td>
@@ -78,6 +83,9 @@
                     @endforeach
                 </tbody>
             </table>
+        </div>
+        <div class="card-footer d-flex justify-content-center">
+            {{ $users->links() }}
         </div>
     </div>
 @stop

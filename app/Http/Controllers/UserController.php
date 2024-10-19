@@ -32,14 +32,18 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombre' => 'required|string',
+            'dni' => 'required|numeric|unique:users|digits:8',
+            'nombre' => 'required|string|regex:/^[\pL\s]+$/u',
+            'fecha_nacimiento' => 'required|date',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8'
         ]);
 
         try {
             User::create([
-                'nombre' => $request->nombre,
+                'dni' => $request->dni,
+                'name' => $request->nombre,
+                'fecha_nacimiento' => $request->fecha_nacimiento,
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
                 'rol_id' => 2,
@@ -67,15 +71,18 @@ class UserController extends Controller
     public function update(Request $request, User $trabajador)
     {
         $request->validate([
+            'dni' => 'required|numeric|digits:8|unique:users,dni,' . $trabajador->id,
             'nombre' => 'required|string',
+            'fecha_nacimiento' => 'required|date',
             'email' => 'required|email|unique:users,email,' . $trabajador->id
         ]);
 
         try {
             $trabajador->update([
-                'nombre' => $request->nombre,
+                'dni' => $request->dni,
+                'name' => $request->nombre,
+                'fecha_nacimiento' => $request->fecha_nacimiento,
                 'email' => $request->email,
-                'password' => bcrypt($request->password),
                 'rol_id' => 2,
                 'estado' => 1
             ]);

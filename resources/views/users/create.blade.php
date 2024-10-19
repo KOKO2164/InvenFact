@@ -18,6 +18,17 @@
             <form action="{{ route('trabajadores.store') }}" method="POST" id="trabajadorStoreForm">
                 @csrf
                 <div class="form-group">
+                    <label for="dni">DNI</label>
+                    <input type="text" name="dni" id="dni"
+                        class="form-control @error('dni') is-invalid @enderror"
+                        placeholder="Ingrese el DNI del trabajador" value="{{ old('dni') }}" minlength="8" maxlength="8">
+                    @error('dni')
+                        <div class="invalid-feedback">
+                            <strong>{{ $message }}</strong>
+                        </div>
+                    @enderror
+                </div>
+                <div class="form-group">
                     <label for="nombre">Nombre</label>
                     <input type="text" name="nombre" id="nombre"
                         class="form-control @error('nombre') is-invalid @enderror"
@@ -40,10 +51,22 @@
                     @enderror
                 </div>
                 <div class="form-group">
+                    <label for="fecha_nacimiento">Fecha de Nacimiento</label>
+                    <input type="date" name="fecha_nacimiento" id="fecha_nacimiento"
+                        class="form-control @error('fecha_nacimiento') is-invalid @enderror"
+                        value="{{ old('fecha_nacimiento') }}" max="{{ \Carbon\Carbon::now()->subYears(18)->format('Y-m-d') }}"
+                        min="{{ \Carbon\Carbon::now()->subYears(65)->format('Y-m-d') }}">
+                    @error('fecha_nacimiento')
+                        <div class="invalid-feedback">
+                            <strong>{{ $message }}</strong>
+                        </div>
+                    @enderror
+                </div>
+                <div class="form-group">
                     <label for="password">Contraseña</label>
                     <input type="password" name="password" id="password"
                         class="form-control @error('password') is-invalid @enderror"
-                        placeholder="Ingrese la contraseña del trabajador">
+                        placeholder="Ingrese la contraseña del trabajador" minlength="8">
                     @error('password')
                         <div class="invalid-feedback">
                             <strong>{{ $message }}</strong>

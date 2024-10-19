@@ -19,9 +19,19 @@
                 @csrf
                 @method('PATCH')
                 <div class="form-group">
+                    <label for="dni">DNI</label>
+                    <input type="text" name="dni" id="dni" class="form-control" placeholder="Ingrese el DNI del trabajador"
+                        value="{{ $trabajador->dni }}">
+                    @error('dni')
+                        <div class="invalid-feedback">
+                            <strong>{{ $message }}</strong>
+                        </div>
+                    @enderror
+                </div>
+                <div class="form-group">
                     <label for="nombre">Nombre</label>
                     <input type="text" name="nombre" id="nombre" class="form-control"
-                        placeholder="Ingrese el nombre del trabajador" value="{{ $trabajador->nombre }}">
+                        placeholder="Ingrese el nombre del trabajador" value="{{ $trabajador->name }}">
                     @error('nombre')
                         <div class="invalid-feedback">
                             <strong>{{ $message }}</strong>
@@ -33,6 +43,17 @@
                     <input type="email" name="email" id="email" class="form-control"
                         placeholder="Ingrese el correo del trabajador" value="{{ $trabajador->email }}">
                     @error('email')
+                        <div class="invalid-feedback">
+                            <strong>{{ $message }}</strong>
+                        </div>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="fecha_nacimiento">Fecha de Nacimiento</label>
+                    <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" class="form-control"
+                        value="{{ $trabajador->fecha_nacimiento }}" max="{{ \Carbon\Carbon::now()->subYears(18)->format('Y-m-d') }}"
+                        min="{{ \Carbon\Carbon::now()->subYears(65)->format('Y-m-d') }}">
+                    @error('fecha_nacimiento')
                         <div class="invalid-feedback">
                             <strong>{{ $message }}</strong>
                         </div>
