@@ -27,7 +27,7 @@
                 </span>
             </div>
         </div>
-        <div class="col-md-4">
+        {{-- <div class="col-md-4">
             <x-adminlte-card title="Últimos Cambios en Productos" theme="info" icon="fas fa-history">
                 <div class="list-group">
                     @foreach ($ultimosCambiosProductos as $producto)
@@ -54,7 +54,7 @@
                     @endforeach
                 </div>
             </x-adminlte-card>
-        </div>
+        </div> --}}
         <div class="col-md-2">
             <div class="small-box bg-green">
                 <div class="inner">

@@ -13,9 +13,9 @@ class Categoria extends Model
     protected $fillable = [
         'nombre',
         'descripcion',
-        'imagen',
         'estado'
     ];
+    public $timestamps = false;
 
     public function productos()
     {

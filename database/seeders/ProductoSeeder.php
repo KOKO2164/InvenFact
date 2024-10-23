@@ -20,7 +20,6 @@ class ProductoSeeder extends Seeder
             'precio' => 10.50,
             'stock' => 200,
             'codigoUbicacion' => 'CP01',
-            'imagen' => 'images/productos/cemento_portland.jpg',
             'estado' => true,
             'categoria_id' => 1, // ID de la categoría de Cemento
         ]);
@@ -31,7 +30,6 @@ class ProductoSeeder extends Seeder
             'precio' => 12.00,
             'stock' => 150,
             'codigoUbicacion' => 'CR02',
-            'imagen' => 'images/productos/cemento_rapido.jpg',
             'estado' => true,
             'categoria_id' => 1,
         ]);
@@ -42,7 +40,6 @@ class ProductoSeeder extends Seeder
             'precio' => 9.00,
             'stock' => 250,
             'codigoUbicacion' => 'CG03',
-            'imagen' => 'images/productos/cemento_gris.jpg',
             'estado' => true,
             'categoria_id' => 1,
         ]);
@@ -54,7 +51,6 @@ class ProductoSeeder extends Seeder
             'precio' => 0.60,
             'stock' => 500,
             'codigoUbicacion' => 'LR01',
-            'imagen' => 'images/productos/ladrillo_rojo.jpg',
             'estado' => true,
             'categoria_id' => 2, // ID de la categoría de Ladrillos
         ]);
@@ -65,7 +61,6 @@ class ProductoSeeder extends Seeder
             'precio' => 0.75,
             'stock' => 300,
             'codigoUbicacion' => 'LE02',
-            'imagen' => 'images/productos/ladrillo_ecologico.jpg',
             'estado' => true,
             'categoria_id' => 2,
         ]);
@@ -76,7 +71,6 @@ class ProductoSeeder extends Seeder
             'precio' => 0.80,
             'stock' => 400,
             'codigoUbicacion' => 'LB03',
-            'imagen' => 'images/productos/ladrillo_block.jpg',
             'estado' => true,
             'categoria_id' => 2,
         ]);
@@ -88,7 +82,6 @@ class ProductoSeeder extends Seeder
             'precio' => 150.00,
             'stock' => 50,
             'codigoUbicacion' => 'VA01',
-            'imagen' => 'images/productos/viga_acero.jpg',
             'estado' => true,
             'categoria_id' => 3, // ID de la categoría de Aceros
         ]);
@@ -99,7 +92,6 @@ class ProductoSeeder extends Seeder
             'precio' => 0.90,
             'stock' => 300,
             'codigoUbicacion' => 'VA02',
-            'imagen' => 'images/productos/varilla_acero.jpg',
             'estado' => true,
             'categoria_id' => 3,
         ]);
@@ -110,7 +102,6 @@ class ProductoSeeder extends Seeder
             'precio' => 200.00,
             'stock' => 20,
             'codigoUbicacion' => 'PA03',
-            'imagen' => 'images/productos/placa_acero.jpg',
             'estado' => true,
             'categoria_id' => 3,
         ]);
@@ -122,7 +113,6 @@ class ProductoSeeder extends Seeder
             'precio' => 12.00,
             'stock' => 100,
             'codigoUbicacion' => 'MH01',
-            'imagen' => 'images/productos/martillo_clavo.jpg',
             'estado' => true,
             'categoria_id' => 4, // ID de la categoría de Herramientas Manuales
         ]);
@@ -133,7 +123,6 @@ class ProductoSeeder extends Seeder
             'precio' => 5.00,
             'stock' => 150,
             'codigoUbicacion' => 'DP02',
-            'imagen' => 'images/productos/destornillador_phillips.jpg',
             'estado' => true,
             'categoria_id' => 4,
         ]);
@@ -144,7 +133,6 @@ class ProductoSeeder extends Seeder
             'precio' => 8.00,
             'stock' => 75,
             'codigoUbicacion' => 'LI03',
-            'imagen' => 'images/productos/llave_inglesa.jpg',
             'estado' => true,
             'categoria_id' => 4,
         ]);
@@ -156,7 +144,6 @@ class ProductoSeeder extends Seeder
             'precio' => 15.00,
             'stock' => 200,
             'codigoUbicacion' => 'TP01',
-            'imagen' => 'images/productos/tablero_pino.jpg',
             'estado' => true,
             'categoria_id' => 5, // ID de la categoría de Maderas
         ]);
@@ -167,7 +154,6 @@ class ProductoSeeder extends Seeder
             'precio' => 50.00,
             'stock' => 30,
             'codigoUbicacion' => 'TM02',
-            'imagen' => 'images/productos/tronco_madera.jpg',
             'estado' => true,
             'categoria_id' => 5,
         ]);
@@ -178,7 +164,6 @@ class ProductoSeeder extends Seeder
             'precio' => 40.00,
             'stock' => 100,
             'codigoUbicacion' => 'MC03',
-            'imagen' => 'images/productos/madera_contrachapada.jpg',
             'estado' => true,
             'categoria_id' => 5,
         ]);
@@ -190,7 +175,6 @@ class ProductoSeeder extends Seeder
             'precio' => 50000.00,
             'stock' => 5,
             'codigoUbicacion' => 'EC01',
-            'imagen' => 'images/productos/excavadora_caterpillar.jpg',
             'estado' => true,
             'categoria_id' => 6, // ID de la categoría de Maquinaria Pesada
         ]);
@@ -201,7 +185,6 @@ class ProductoSeeder extends Seeder
             'precio' => 80000.00,
             'stock' => 3,
             'codigoUbicacion' => 'GM02',
-            'imagen' => 'images/productos/grua_movil.jpg',
             'estado' => true,
             'categoria_id' => 6,
         ]);
@@ -212,7 +195,6 @@ class ProductoSeeder extends Seeder
             'precio' => 60000.00,
             'stock' => 4,
             'codigoUbicacion' => 'RE03',
-            'imagen' => 'images/productos/retroexcavadora.jpg',
             'estado' => true,
             'categoria_id' => 6,
         ]);
@@ -224,7 +206,6 @@ class ProductoSeeder extends Seeder
             'precio' => 25.00,
             'stock' => 100,
             'codigoUbicacion' => 'PA01',
-            'imagen' => 'images/productos/pintura_acrilica.jpg',
             'estado' => true,
             'categoria_id' => 7, // ID de la categoría de Pinturas Industriales
         ]);
@@ -235,7 +216,6 @@ class ProductoSeeder extends Seeder
             'precio' => 30.00,
             'stock' => 50,
             'codigoUbicacion' => 'PE02',
-            'imagen' => 'images/productos/pintura_epoxica.jpg',
             'estado' => true,
             'categoria_id' => 7,
         ]);
@@ -246,7 +226,6 @@ class ProductoSeeder extends Seeder
             'precio' => 22.00,
             'stock' => 80,
             'codigoUbicacion' => 'PA03',
-            'imagen' => 'images/productos/pintura_base_agua.jpg',
             'estado' => true,
             'categoria_id' => 7,
         ]);
@@ -258,7 +237,6 @@ class ProductoSeeder extends Seeder
             'precio' => 120.00,
             'stock' => 30,
             'codigoUbicacion' => 'TI01',
-            'imagen' => 'images/productos/taladro_inalambrico.jpg',
             'estado' => true,
             'categoria_id' => 8, // ID de la categoría de Herramientas Eléctricas
         ]);
@@ -269,7 +247,6 @@ class ProductoSeeder extends Seeder
             'precio' => 250.00,
             'stock' => 20,
             'codigoUbicacion' => 'SE02',
-            'imagen' => 'images/productos/sierra_electrica.jpg',
             'estado' => true,
             'categoria_id' => 8,
         ]);
@@ -280,7 +257,6 @@ class ProductoSeeder extends Seeder
             'precio' => 80.00,
             'stock' => 25,
             'codigoUbicacion' => 'ES03',
-            'imagen' => 'images/productos/esmeriladora.jpg',
             'estado' => true,
             'categoria_id' => 8,
         ]);
@@ -292,7 +268,6 @@ class ProductoSeeder extends Seeder
             'precio' => 2.50,
             'stock' => 500,
             'codigoUbicacion' => 'TP01',
-            'imagen' => 'images/productos/tubo_pvc.jpg',
             'estado' => true,
             'categoria_id' => 9, // ID de la categoría de Tubos y Conexiones
         ]);
@@ -303,7 +278,6 @@ class ProductoSeeder extends Seeder
             'precio' => 1.50,
             'stock' => 400,
             'codigoUbicacion' => 'CT02',
-            'imagen' => 'images/productos/conexion_T.jpg',
             'estado' => true,
             'categoria_id' => 9,
         ]);
@@ -314,7 +288,6 @@ class ProductoSeeder extends Seeder
             'precio' => 15.00,
             'stock' => 200,
             'codigoUbicacion' => 'TC03',
-            'imagen' => 'images/productos/tubo_cobre.jpg',
             'estado' => true,
             'categoria_id' => 9,
         ]);
@@ -326,7 +299,6 @@ class ProductoSeeder extends Seeder
             'precio' => 45.00,
             'stock' => 100,
             'codigoUbicacion' => 'IL01',
-            'imagen' => 'images/productos/impermeabilizante_liquido.jpg',
             'estado' => true,
             'categoria_id' => 10, // ID de la categoría de Impermeabilizantes
         ]);
@@ -337,7 +309,6 @@ class ProductoSeeder extends Seeder
             'precio' => 80.00,
             'stock' => 50,
             'codigoUbicacion' => 'MI02',
-            'imagen' => 'images/productos/membrana_impermeabilizante.jpg',
             'estado' => true,
             'categoria_id' => 10,
         ]);
@@ -348,7 +319,6 @@ class ProductoSeeder extends Seeder
             'precio' => 20.00,
             'stock' => 150,
             'codigoUbicacion' => 'SI03',
-            'imagen' => 'images/productos/sellador_impermeabilizante.jpg',
             'estado' => true,
             'categoria_id' => 10,
         ]);
@@ -360,7 +330,6 @@ class ProductoSeeder extends Seeder
             'precio' => 35.00,
             'stock' => 100,
             'codigoUbicacion' => 'AT01',
-            'imagen' => 'images/productos/aislante_termico.jpg',
             'estado' => true,
             'categoria_id' => 11, // ID de la categoría de Aislantes
         ]);
@@ -371,7 +340,6 @@ class ProductoSeeder extends Seeder
             'precio' => 30.00,
             'stock' => 80,
             'codigoUbicacion' => 'AA02',
-            'imagen' => 'images/productos/aislante_acustico.jpg',
             'estado' => true,
             'categoria_id' => 11,
         ]);
@@ -382,7 +350,6 @@ class ProductoSeeder extends Seeder
             'precio' => 50.00,
             'stock' => 70,
             'codigoUbicacion' => 'PA03',
-            'imagen' => 'images/productos/panel_aislante.jpg',
             'estado' => true,
             'categoria_id' => 11,
         ]);
@@ -394,7 +361,6 @@ class ProductoSeeder extends Seeder
             'precio' => 150.00,
             'stock' => 20,
             'codigoUbicacion' => 'AA01',
-            'imagen' => 'images/productos/andamio_aluminio.jpg',
             'estado' => true,
             'categoria_id' => 12, // ID de la categoría de Sistemas de Andamios
         ]);
@@ -405,7 +371,6 @@ class ProductoSeeder extends Seeder
             'precio' => 200.00,
             'stock' => 15,
             'codigoUbicacion' => 'AA02',
-            'imagen' => 'images/productos/andamio_acero.jpg',
             'estado' => true,
             'categoria_id' => 12,
         ]);
@@ -416,7 +381,6 @@ class ProductoSeeder extends Seeder
             'precio' => 75.00,
             'stock' => 25,
             'codigoUbicacion' => 'EA03',
-            'imagen' => 'images/productos/escalera_andamio.jpg',
             'estado' => true,
             'categoria_id' => 12,
         ]);

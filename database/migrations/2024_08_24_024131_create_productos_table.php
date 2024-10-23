@@ -18,7 +18,6 @@ return new class extends Migration
             $table->decimal('precio', 10, 2);
             $table->integer('stock')->default(0);
             $table->string('codigoUbicacion', 6)->nullable();
-            $table->string('imagen', 255)->nullable();
             $table->boolean('estado')->default(true);
             $table->foreignId('categoria_id')->constrained('categorias')
                 ->onUpdate('cascade')->onDelete('restrict');
