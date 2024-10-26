@@ -36,28 +36,30 @@
                     <a href="{{ route($routes['edit'], $item) }}" class="btn btn-warning">
                         <i class="fas fa-pencil-alt"></i>
                     </a>
-                    @if ($item->estado)
-                        @if ($item->id === auth()->user()->id)
-                            <button class="btn btn-danger" disabled>
-                                <i class="fas fa-lock"></i>
-                            </button>
+                    @if (isset($routes['disable']) && isset($routes['enable']))
+                        @if ($item->estado)
+                            @if ($item->id === auth()->user()->id)
+                                <button class="btn btn-danger" disabled>
+                                    <i class="fas fa-lock"></i>
+                                </button>
+                            @else
+                                <form action="{{ route($routes['disable'], $item) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('patch')
+                                    <button class="btn btn-danger" type="submit">
+                                        <i class="fas fa-lock"></i>
+                                    </button>
+                                </form>
+                            @endif
                         @else
-                            <form action="{{ route($routes['disable'], $item) }}" method="POST" class="d-inline">
+                            <form action="{{ route($routes['enable'], $item) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('patch')
-                                <button class="btn btn-danger" type="submit">
-                                    <i class="fas fa-lock"></i>
+                                <button class="btn btn-success" type="submit">
+                                    <i class="fas fa-unlock"></i>
                                 </button>
                             </form>
                         @endif
-                    @else
-                        <form action="{{ route($routes['enable'], $item) }}" method="POST" class="d-inline">
-                            @csrf
-                            @method('patch')
-                            <button class="btn btn-success" type="submit">
-                                <i class="fas fa-unlock"></i>
-                            </button>
-                        </form>
                     @endif
                 </td>
             </tr>

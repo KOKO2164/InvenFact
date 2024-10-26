@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(RolSeeder::class);
         $this->call(ProveedorSeeder::class);
+        $this->call(ClienteSeeder::class);
+        $this->call(TrabajadorProveedorSeeder::class);
         $this->call(CategoriaSeeder::class);
         $this->call(ProductoSeeder::class);
 
@@ -30,7 +32,10 @@ class DatabaseSeeder extends Seeder
             'rol_id' => 1,
             'estado' => true
         ]);
+
         $this->call(UserSeeder::class);
+        $this->call(EstadoSeeder::class);
+        //$this->call(CompraSeeder::class);
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([

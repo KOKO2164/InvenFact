@@ -58,32 +58,16 @@ class ProductoController extends Controller
             'precio' => 'required|numeric|min:1',
             'stock' => 'required|numeric|min:1',
             'codigoUbicacion' => 'required|string',
-            'imagen' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'categoria' => 'required|numeric'
         ]);
 
         try {
-            if (!$request->hasFile('imagen')) {
-                return redirect()->back()->with('error', 'No file detected in the request.');
-            }
-            if (!$request->file('imagen')->isValid()) {
-                return redirect()->back()->with('error', 'The uploaded file is invalid.');
-            }
-            $file = $request->file('imagen');
-            $destinationPath = public_path('images/categorias/');
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0777, true);
-            }
-            $nameFile = time() . '-' . $file->getClientOriginalName();
-            $file->move($destinationPath, $nameFile);
-
             Producto::create([
                 'nombre' => $request->nombre,
                 'descripcion' => $request->descripcion,
                 'precio' => $request->precio,
                 'stock' => $request->stock,
                 'codigoUbicacion' => $request->codigoUbicacion,
-                'imagen' => 'images/categorias/' . $nameFile,
                 'categoria_id' => $request->categoria,
                 'estado' => 1
             ]);
@@ -100,7 +84,9 @@ class ProductoController extends Controller
      */
     public function edit(Producto $producto)
     {
-        return view('productos.edit', compact('producto'));
+        $categorias = Categoria::all();
+
+        return view('productos.edit', compact('producto', 'categorias'));
     }
 
     /**
@@ -111,14 +97,20 @@ class ProductoController extends Controller
         $request->validate([
             'nombre' => 'required|string',
             'descripcion' => 'required|string',
-            'imagen' => 'required|string'
+            'precio' => 'required|numeric|min:1',
+            'stock' => 'required|numeric|min:1',
+            'codigoUbicacion' => 'required|string',
+            'categoria' => 'required|numeric|exists:categorias,id'
         ]);
 
         try {
             $producto->update([
                 'nombre' => $request->nombre,
                 "descripcion" => $request->descripcion,
-                'imagen' => $request->imagen,
+                "precio" => $request->precio,
+                "stock" => $request->stock,
+                "codigoUbicacion" => $request->codigoUbicacion,
+                "categoria_id" => $request->categoria,
                 'estado' => 1
             ]);
             return redirect()->route('productos.index')->with('success', 'Producto creado correctamente');

@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ordenes', function (Blueprint $table) {
+        Schema::create('compras', function (Blueprint $table) {
             $table->id();
+            $table->string('codigo', 4)->unique();
+            $table->foreignId('trabajador_id')->constrained('users')
+                ->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('proveedor_id')->constrained('proveedores')
                 ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('trabajador_id')->constrained('users')
+            $table->foreignId('trabajador_proveedor_id')->constrained('trabajador_proveedores')
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('estado_id')->constrained('estados')
                 ->onUpdate('cascade')->onDelete('cascade');
@@ -32,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ordenes');
+        Schema::dropIfExists('compras');
     }
 };

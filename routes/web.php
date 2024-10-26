@@ -2,7 +2,11 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\CompraController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DetalleCompraController;
+use App\Http\Controllers\DetallePedidoController;
+use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\UserController;
@@ -41,3 +45,32 @@ Route::patch('/categorias/{categoria}/habilitar', [CategoriaController::class, '
 Route::resource('/productos', ProductoController::class)->except('show', 'destroy')->parameters(['productos' => 'producto'])->middleware('auth');
 Route::patch('/productos/{producto}/deshabilitar', [ProductoController::class, 'disable'])->name('productos.disable')->middleware('auth');
 Route::patch('/productos/{producto}/habilitar', [ProductoController::class, 'enable'])->name('productos.enable')->middleware('auth');
+
+Route::resource('/compras', CompraController::class)->except('show', 'destroy')->parameters(['compras' => 'compra'])->middleware('auth');
+Route::get('/compras/{compra}/detalle', [DetalleCompraController::class, 'index'])->name('detalles-compras.index');
+Route::post('/compras/{compra}/detalle', [DetalleCompraController::class, 'store'])->name('detalles-compras.store');
+Route::patch('/compras/{compra}/detalle', [DetalleCompraController::class, 'update'])->name('detalles-compras.update');
+Route::delete('/compras/{compra}/detalle', [DetalleCompraController::class, 'destroy'])->name('detalles-compras.destroy');
+
+Route::resource('/pedidos', PedidoController::class)->except('show', 'destroy')->parameters(['pedidos' => 'pedido'])->middleware('auth');
+Route::get('/pedidos/{pedido}/detalle', [DetallePedidoController::class, 'index'])->name('detalles-pedidos.index');
+Route::post('/pedidos/{pedido}/detalle', [DetallePedidoController::class, 'store'])->name('detalles-pedidos.store');
+Route::patch('/pedidos/{pedido}/detalle', [DetallePedidoController::class, 'update'])->name('detalles-pedidos.update');
+Route::delete('/pedidos/{pedido}/detalle', [DetallePedidoController::class, 'destroy'])->name('detalles-pedidos.destroy');
+
+Route::post('/obtener-trabajadores', function (\Illuminate\Http\Request $request) {
+    return response()->json(\App\Models\TrabajadorProveedor::where([
+        ['proveedor_id', $request->proveedor_id],
+        ['estado', 1]
+    ])->get());
+})->name('obtener-trabajadores')->middleware('auth');
+Route::post('/obtener-productos', function (\Illuminate\Http\Request $request) {
+    $request->validate([
+        'producto' => 'required|string'
+    ]);
+
+    return response()->json(\App\Models\Producto::where([
+        ['nombre', 'LIKE', "%$request->producto%"],
+        ['estado', 1]
+    ])->get());
+})->name('obtener-productos')->middleware('auth');

@@ -54,34 +54,12 @@ class CategoriaController extends Controller
         $request->validate([
             'nombre' => 'required|string',
             'descripcion' => 'required|string',
-            'imagen' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
         try {
-            // Check if the file exists in the request
-            if (!$request->hasFile('imagen')) {
-                return redirect()->back()->with('error', 'No file detected in the request.');
-            }
-
-            // Check if the uploaded file is valid
-            if (!$request->file('imagen')->isValid()) {
-                return redirect()->back()->with('error', 'The uploaded file is invalid.');
-            }
-
-            $file = $request->file('imagen');
-            $destinationPath = public_path('images/categorias/');
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0777, true);
-            }
-
-            $nameFile = time() . '-' . $file->getClientOriginalName();
-
-            $file->move($destinationPath, $nameFile);
-
             Categoria::create([
                 'nombre' => $request->nombre,
                 'descripcion' => $request->descripcion,
-                'imagen' => 'images/categorias/' . $nameFile,
                 'estado' => 1
             ]);
 
@@ -96,7 +74,7 @@ class CategoriaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Categoria $proveedor)
+    public function edit(Categoria $categoria)
     {
         return view('categorias.edit', compact('categoria'));
     }
@@ -109,14 +87,12 @@ class CategoriaController extends Controller
         $request->validate([
             'nombre' => 'required|string',
             'descripcion' => 'required|string',
-            'imagen' => 'required|string'
         ]);
 
         try {
             $categoria->update([
                 'nombre' => $request->nombre,
                 "descripcion" => $request->descripcion,
-                'imagen' => $request->imagen,
                 'estado' => 1
             ]);
             return redirect()->route('categorias.index')->with('success', 'Categoria creado correctamente');

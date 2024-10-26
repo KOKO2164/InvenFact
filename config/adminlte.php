@@ -133,7 +133,7 @@ return [
     |
     */
 
-    'usermenu_enabled' => false,
+    'usermenu_enabled' => true,
     'usermenu_header' => false,
     'usermenu_header_class' => 'bg-primary',
     'usermenu_image' => false,
@@ -313,7 +313,17 @@ return [
             'text' => 'Gestionar Productos',
             'route'  => 'productos.index',
             'icon' => 'fas fa-truck-loading',
-        ]
+        ],
+        [
+            'text' => 'Gestionar Compras',
+            'route' => 'compras.index',
+            'icon' => 'fas fa-fw fa-shopping-cart',
+        ],
+        [
+            'text' => 'Gestionar Pedidos',
+            'route' => 'pedidos.index',
+            'icon' => 'fas fa-fw fa-clipboard-list',
+        ],
     ],
 
     /*
@@ -397,12 +407,12 @@ return [
             ],
         ],
         'Sweetalert2' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdn.jsdelivr.net/npm/sweetalert2@8',
+                    'location' => '//cdn.jsdelivr.net/npm/sweetalert2@11',
                 ],
             ],
         ],
