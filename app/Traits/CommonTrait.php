@@ -36,7 +36,10 @@ trait CommonTrait
         $request->validate($this->validationRules());
 
         try {
-            $this->model::create($request->all());
+            $item = $this->model::create($request->all());
+            if ($request->has('password')) {
+                $item->update(['password' => bcrypt($request->input('password'))]);
+            }
 
             return redirect()->route((new $this->model())->getTable() . '.index')->with('success', 'Registro creado correctamente');
         } catch (\Exception $e) {

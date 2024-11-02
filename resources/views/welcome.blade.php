@@ -5,7 +5,7 @@
 @stop
 @section('content')
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-12">
             <div class="small-box bg-success">
                 <div class="inner">
                     <h3>Bienvenido, <span id="nombreUsuario">{{ auth()->user()->name }}</span></h3>
@@ -27,63 +27,7 @@
                 </span>
             </div>
         </div>
-        {{-- <div class="col-md-4">
-            <x-adminlte-card title="Últimos Cambios en Productos" theme="info" icon="fas fa-history">
-                <div class="list-group">
-                    @foreach ($ultimosCambiosProductos as $producto)
-                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h6 class="mb-1">{{ $producto->nombre }}</h6>
-                                <small>{{ $producto->created_at?->diffForHumans() ?? 'No date available' }}</small>
-                            </div>
-                        </a>
-                    @endforeach
-                </div>
-            </x-adminlte-card>
-        </div>
-        <div class="col-md-4">
-            <x-adminlte-card title="Últimos Cambios en Categorias" theme="warning" icon="fas fa-history">
-                <div class="list-group">
-                    @foreach ($ultimosCambiosCategorias as $categoria)
-                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h6 class="mb-1">{{ $categoria->nombre }}</h6>
-                                <small>{{ $categoria->created_at?->diffForHumans() ?? 'No date available' }}</small>
-                            </div>
-                        </a>
-                    @endforeach
-                </div>
-            </x-adminlte-card>
-        </div> --}}
-        <div class="col-md-2">
-            <div class="small-box bg-green">
-                <div class="inner">
-                    <h3>{{ $stockMayor->stock ?? 0 }}</h3>
-                    <p>{{ $stockMayor->nombre ?? '' }}</p>
-                </div>
-                <div class="icon">
-                    <i class="fas fa-boxes"></i>
-                </div>
-                <span class="small-box-footer">
-                    Stock mayor <i class="fa fa-boxes"></i>
-                </span>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="small-box bg-purple">
-                <div class="inner">
-                    <h3>{{ $stockMenor->stock ?? 0 }}</h3>
-                    <p>{{ $stockMenor->nombre ?? '' }}</p>
-                </div>
-                <div class="icon">
-                    <i class="fas fa-box"></i>
-                </div>
-                <span class="small-box-footer">
-                    Stock Menor <i class="fa fa-box"></i>
-                </span>
-            </div>
-        </div>
-
+        
         <div class="col-md-2">
             <div class="small-box bg-blue">
                 <div class="inner">
@@ -143,6 +87,64 @@
                 </span>
             </div>
         </div>
+       
+        <div class="col-md-2">
+            <div class="small-box bg-green">
+                <div class="inner">
+                    <h3>{{ $stockMayor->stock ?? 0 }}</h3>
+                    <p>{{ $stockMayor->nombre ?? '' }}</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-boxes"></i>
+                </div>
+                <span class="small-box-footer">
+                    Stock mayor <i class="fa fa-boxes"></i>
+                </span>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="small-box bg-purple">
+                <div class="inner">
+                    <h3>{{ $stockMenor->stock ?? 0 }}</h3>
+                    <p>{{ $stockMenor->nombre ?? '' }}</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-box"></i>
+                </div>
+                <span class="small-box-footer">
+                    Stock Menor <i class="fa fa-box"></i>
+                </span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <x-adminlte-card title="Últimos Cambios en Productos" theme="info" icon="fas fa-history">
+                <div class="list-group">
+                    @foreach ($ultimosCambiosProductos as $producto)
+                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">{{ $producto->nombre }}</h6>
+                                <small>{{ $producto->created_at?->diffForHumans() ?? 'No date available' }}</small>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+            </x-adminlte-card>
+        </div>
+        {{-- <div class="col-md-4">
+            <x-adminlte-card title="Últimos Cambios en Categorias" theme="warning" icon="fas fa-history">
+                <div class="list-group">
+                    @foreach ($ultimosCambiosCategorias as $categoria)
+                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">{{ $categoria->nombre }}</h6>
+                                <small>{{ $categoria->created_at?->diffForHumans() ?? 'No date available' }}</small>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+            </x-adminlte-card>
+        </div> --}}
+        
         <div class="col-md-4">
             <x-adminlte-card title="Productos por Categoría" theme="primary" icon="fas fa-chart-pie">
                 <canvas id="productosPorCategoriaChart" width="320" height="300"></canvas>
@@ -153,11 +155,11 @@
                 <canvas id="productosPorStock" width="320" height="300"></canvas>
             </x-adminlte-card>
         </div>
-        <div class="col-md-4">
+        {{-- <div class="col-md-4">
             <x-adminlte-card title="Ventas por mes" theme="pink" icon="fas fa-chart-line">
                 <canvas id="ventasPorFecha" width="320" height="300"></canvas>
             </x-adminlte-card>
-        </div>
+        </div>--}}
     </div>
 @endsection
 @section('js')

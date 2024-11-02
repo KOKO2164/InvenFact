@@ -41,15 +41,15 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="proveedor">Proveedor</label>
-                            <select name="proveedor" id="proveedor"
-                                class="form-control @error('proveedor') is-invalid @enderror">
+                            <select name="proveedor_id" id="proveedor"
+                                class="form-control @error('proveedor_id') is-invalid @enderror">
                                 <option value="">Seleccione un proveedor</option>
                                 @foreach ($otherModels['proveedores'] as $model)
                                     <option value="{{ $model->id }}" @if ($item->proveedor_id == $model->id) selected @endif>
                                         {{ $model->nombre }}</option>
                                 @endforeach
                             </select>
-                            @error('proveedor')
+                            @error('proveedor_id')
                                 <div class="invalid-feedback">
                                     <strong>{{ $message }}</strong>
                                 </div>
@@ -58,7 +58,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="plazo">Plazo</label>
+                            <label for="plazo">Plazo (en días)</label>
                             <input type="number" name="plazo" id="plazo"
                                 class="form-control @error('plazo') is-invalid @enderror" value="{{ $item->plazo }}">
                             @error('plazo')
@@ -68,6 +68,7 @@
                             @enderror
                         </div>
                     </div>
+                    <input type="hidden" name="trabajador_id" value="{{ auth()->user()->id }}">
                 </div>
             </form>
         </div>

@@ -30,7 +30,7 @@ trait ComplexTrait
                 $otherModels[$key] = $query->get();
             }
         }
-
+        
         return view((new $this->model())->getTable() . '.index', compact('items', 'otherModels'));
     }
 
@@ -88,12 +88,11 @@ trait ComplexTrait
     public function update(Request $request, $id)
     {
         $request->validate($this->validationRules($id));
-
         try {
             $item = $this->model::find($id);
             $item->update($request->all());
 
-            return redirect()->route((new $this->model())->getTable() . '.edit')->with('success', 'Registro actualizado correctamente');
+            return redirect()->route((new $this->model())->getTable() . '.edit', $item)->with('success', 'Registro actualizado correctamente');
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return redirect()->route((new $this->model())->getTable() . '.index')->with('error', 'Ocurrió un error al actualizar el registro');

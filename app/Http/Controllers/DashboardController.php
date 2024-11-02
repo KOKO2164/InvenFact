@@ -16,7 +16,7 @@ class DashboardController extends Controller
         $stockMenor = Producto::orderBy('stock', 'asc')->first();
         $stockMenorLista = Producto::orderBy('stock', 'asc')->take(10);
 
-        //$ultimosCambiosProductos = Producto::latest()->take(3)->get();
+        $ultimosCambiosProductos = Producto::latest()->take(3)->get();
         //$ultimosCambiosCategorias = Categoria::latest()->take(3)->get();
 
         $productosPorCategoria = Categoria::withCount('productos')->get();
@@ -30,7 +30,7 @@ class DashboardController extends Controller
             'stockMayor',
             'stockMenor',
             'stockMenorLista',
-            //'ultimosCambiosProductos',
+            'ultimosCambiosProductos',
             //'ultimosCambiosCategorias',
             'productosPorCategoria',
             'totalProductos',

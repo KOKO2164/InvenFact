@@ -53,7 +53,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="plazo">Plazo</label>
+                            <label for="plazo">Plazo (en días)</label>
                             <input type="number" name="plazo" id="plazo"
                                 class="form-control @error('plazo') is-invalid @enderror"
                                 placeholder="Ingrese el plazo de la compra" value="{{ old('plazo') }}" min="0"

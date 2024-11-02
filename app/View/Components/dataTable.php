@@ -12,16 +12,18 @@ class dataTable extends Component
     public $titles;
     public $columns;
     public $routes;
+    public $otherModels;
 
     /**
      * Create a new component instance.
      */
-    public function __construct($info, $titles, $columns, $routes)
+    public function __construct($info, $titles, $columns, $routes, $otherModels = [])
     {
         $this->info = $info;
         $this->titles = $titles;
         $this->columns = $columns;
         $this->routes = $routes;
+        $this->otherModels = $otherModels;
     }
 
     /**
