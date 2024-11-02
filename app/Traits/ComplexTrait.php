@@ -25,7 +25,7 @@ trait ComplexTrait
             foreach ($this->otherModels() as $key => $model) {
                 $query = $model::query();
                 if (!Schema::hasColumn((new $model())->getTable(), 'estado') && $this->model::first()) {
-                    $query->where('id', '>=', $this->model::first()->estado_id);
+                    $query->orderBy('id', 'asc');
                 }
                 $otherModels[$key] = $query->get();
             }
@@ -104,10 +104,6 @@ trait ComplexTrait
         try {
             $item = $this->model::find($id);
 
-            $item->update([
-                'estado_id' => $request->estado_id
-            ]);
-
             if ($request->estado_id == 7) {
                 if ($item instanceof Compra) {
                     foreach ($item->detalleCompras as $detalle) {
@@ -119,12 +115,20 @@ trait ComplexTrait
                 } else {
                     foreach ($item->detallePedidos as $detalle) {
                         $producto = Producto::find($detalle->producto_id);
+                        
+                        if ($detalle->cantidad > $producto->stock) {
+                            return redirect()->route((new $this->model())->getTable() . '.index')->with('error', 'No se puede cambiar el estado a finalizado, la cantidad solicitada supera el stock actual');
+                        }
                         $producto->update([
                             'stock' => $producto->stock - $detalle->cantidad
                         ]);
                     }
                 }
             }
+
+            $item->update([
+                'estado_id' => $request->estado_id
+            ]);
 
             return redirect()->route((new $this->model())->getTable() . '.index')->with('success', 'Estado actualizado correctamente');
         } catch (\Exception $e) {
