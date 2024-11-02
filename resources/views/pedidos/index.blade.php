@@ -8,13 +8,14 @@
         module="Pedido" />
 @stop
 @section('table')
-    <x-data-table :data="$pedidos" :titles="['Código', 'Fecha', 'Cliente', 'Total', 'Estado', 'Acciones']" :columns="[
+    <x-data-table :info="$items" :titles="['Código', 'Fecha', 'Cliente', 'Total', 'Estado', 'Acciones']" :columns="[
         ['key' => 'codigo'],
         ['key' => 'fecha'],
         ['key' => 'cliente', 'relationship' => true, 'attribute' => 'nombre'],
         ['key' => 'total'],
         ['key' => 'estado', 'relationship' => true, 'attribute' => 'nombre'],
     ]" :routes="[
-        'edit' => 'pedidos.edit'
-    ]" />
+        'edit' => 'pedidos.edit',
+        'update-estado' => 'pedidos.update-estado',
+    ]" :otherModels="$otherModels" />
 @stop

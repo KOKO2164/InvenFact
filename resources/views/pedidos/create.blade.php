@@ -34,41 +34,24 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="trabajador">Trabajador</label>
-                            <select name="trabajador" id="trabajador"
-                                class="form-control @error('trabajador') is-invalid @enderror">
-                                <option value="">Seleccione un trabajador</option>
-                                @foreach ($trabajadores as $trabajador)
-                                    <option value="{{ $trabajador->id }}">{{ $trabajador->name }}</option>
-                                @endforeach
-                            </select>
-                            @error('trabajador')
-                                <div class="invalid-feedback">
-                                    <strong>{{ $message }}</strong>
-                                </div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label for="cliente">Cliente</label>
-                            <select name="cliente" id="cliente"
-                                class="form-control @error('cliente') is-invalid @enderror">
+                            <select name="cliente_id" id="cliente"
+                                class="form-control @error('cliente_id') is-invalid @enderror">
                                 <option value="">Seleccione un cliente</option>
-                                @foreach ($clientes as $cliente)
+                                @foreach ($otherModels['clientes'] as $cliente)
                                     <option value="{{ $cliente->id }}">{{ $cliente->nombre }}</option>
                                 @endforeach
                             </select>
-                            @error('cliente')
+                            @error('cliente_id')
                                 <div class="invalid-feedback">
                                     <strong>{{ $message }}</strong>
                                 </div>
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="plazo">Plazo</label>
                             <input type="number" name="plazo" id="plazo"
@@ -82,6 +65,7 @@
                             @enderror
                         </div>
                     </div>
+                    <input type="hidden" name="trabajador_id" value="{{ auth()->user()->id }}">
                 </div>
             </form>
         </div>

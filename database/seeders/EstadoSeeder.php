@@ -13,10 +13,12 @@ class EstadoSeeder extends Seeder
     public function run(): void
     {
         $estados = [
-            ['nombre' => 'Pendiente'],
-            ['nombre' => 'Aprobado'],
-            ['nombre' => 'En proceso'],
+            ['nombre' => 'Generado'],
+            ['nombre' => 'Enviado'],
+            ['nombre' => 'Aceptado'],
             ['nombre' => 'Rechazado'],
+            ['nombre' => 'En proceso'],
+            ['nombre' => 'En camino'],
             ['nombre' => 'Finalizado'],
         ];
 

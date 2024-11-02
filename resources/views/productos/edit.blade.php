@@ -15,14 +15,14 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('productos.update', $producto) }}" method="POST" id="productosUpdateForm">
+            <form action="{{ route('productos.update', $item) }}" method="POST" id="productosUpdateForm">
                 @csrf
                 @method('PUT')
                 <div class="form-group">
                     <label for="nombre">Nombre</label>
                     <input type="text" name="nombre" id="nombre"
                         class="form-control @error('nombre') is-invalid @enderror"
-                        placeholder="Ingrese el nombre del Producto" value="{{ $producto->nombre }}">
+                        placeholder="Ingrese el nombre del Producto" value="{{ $item->nombre }}">
                     @error('nombre')
                         <div class="invalid-feedback">
                             <strong>{{ $message }}</strong>
@@ -33,7 +33,7 @@
                     <label for="descripcion">Descripción</label>
                     <input type="text" name="descripcion" id="descripcion"
                         class="form-control @error('descripcion') is-invalid @enderror"
-                        placeholder="Ingrese la descripción del Producto" value="{{ $producto->descripcion }}">
+                        placeholder="Ingrese la descripción del Producto" value="{{ $item->descripcion }}">
                     @error('descripcion')
                         <div class="invalid-feedback">
                             <strong>{{ $message }}</strong>
@@ -44,7 +44,7 @@
                     <label for="precio">Precio</label>
                     <input type="number" name="precio" id="precio"
                         class="form-control @error('precio') is-invalid @enderror"
-                        placeholder="Ingrese el precio del Producto" value="{{ $producto->precio }}">
+                        placeholder="Ingrese el precio del Producto" value="{{ $item->precio }}">
                     @error('precio')
                         <div class="invalid-feedback">
                             <strong>{{ $message }}</strong>
@@ -55,7 +55,7 @@
                     <label for="stock">Stock</label>
                     <input type="number" name="stock" id="stock"
                         class="form-control @error('stock') is-invalid @enderror"
-                        placeholder="Ingrese el stock del Producto" value="{{ $producto->stock }}">
+                        placeholder="Ingrese el stock del Producto" value="{{ $item->stock }}">
                     @error('stock')
                         <div class="invalid-feedback">
                             <strong>{{ $message }}</strong>
@@ -67,7 +67,7 @@
                     <input type="text" name="codigoUbicacion" id="codigoUbicacion"
                         class="form-control @error('codigoUbicacion') is-invalid @enderror"
                         placeholder="Ingrese el código de ubicación del Producto"
-                        value="{{ $producto->codigoUbicacion }}">
+                        value="{{ $item->codigoUbicacion }}">
                     @error('codigoUbicacion')
                         <div class="invalid-feedback">
                             <strong>{{ $message }}</strong>
@@ -76,16 +76,16 @@
                 </div>
                 <div class="form-group">
                     <label for="categoria">Categoría</label>
-                    <select name="categoria" id="categoria"
-                        class="form-control @error('categoria') is-invalid @enderror">
+                    <select name="categoria_id" id="categoria"
+                        class="form-control @error('categoria_id') is-invalid @enderror">
                         <option value="">Seleccione una categoría</option>
-                        @foreach ($categorias as $categoria)
-                            <option value="{{ $categoria->id }}"
-                                {{ $categoria->id == $producto->categoria_id ? 'selected' : '' }}>
-                                {{ $categoria->nombre }}</option>
+                        @foreach ($otherModels['categorias'] as $otherModel)
+                            <option value="{{ $otherModel->id }}"
+                                {{ $otherModel->id == $item->categoria_id ? 'selected' : '' }}>
+                                {{ $otherModel->nombre }}</option>
                         @endforeach
                     </select>
-                    @error('categoria')
+                    @error('categoria_id')
                         <div class="invalid-feedback">
                             <strong>{{ $message }}</strong>
                         </div>

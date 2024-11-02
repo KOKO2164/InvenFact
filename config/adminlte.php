@@ -295,8 +295,18 @@ return [
 
     'menu' => [
         [
+            'text' => 'Dashboard',
+            'url'  => '/',
+            'icon' => 'fas fa-fw fa-tachometer-alt',
+        ],
+        [
             'text' => 'Gestionar Usuarios',
-            'route'  => 'trabajadores.index',
+            'route'  => 'users.index',
+            'icon' => 'fas fa-fw fa-users',
+        ],
+        [
+            'text' => 'Gestionar Clientes',
+            'route'  => 'clientes.index',
             'icon' => 'fas fa-fw fa-users',
         ],
         [

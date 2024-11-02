@@ -3,121 +3,33 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Traits\CommonTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        $users = User::paginate(10);
+    use CommonTrait;
 
-        return view('users.index', compact('users'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    protected $model = User::class;
+    protected $searchField = 'name';
+    protected function validationRules($id = null)
     {
-        return view('users.create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'dni' => 'required|numeric|unique:users|digits:8',
-            'nombre' => 'required|string|regex:/^[\pL\s]+$/u',
+        $rules = [
+            'dni' => 'required|numeric|digits:8|unique:users,dni,' . $id,
+            'name' => 'required|string',
             'fecha_nacimiento' => 'required|date',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:8'
-        ]);
+            'email' => 'required|email|unique:users,email,' . $id
+        ];
 
-        try {
-            User::create([
-                'dni' => $request->dni,
-                'name' => $request->nombre,
-                'fecha_nacimiento' => $request->fecha_nacimiento,
-                'email' => $request->email,
-                'password' => bcrypt($request->password),
-                'rol_id' => 2,
-                'estado' => 1
-            ]);
-
-            return redirect()->route('trabajadores.index')->with('success', 'Trabajador creado correctamente');
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
-            return redirect()->route('trabajadores.index')->with('error', 'Ocurrió un error al crear el trabajador');
+        if (is_null($id)) {
+            $rules['password'] = 'required|min:8';
         }
+
+        return $rules;
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(User $trabajador)
+    protected function otherModels()
     {
-        return view('users.edit', compact('trabajador'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, User $trabajador)
-    {
-        $request->validate([
-            'dni' => 'required|numeric|digits:8|unique:users,dni,' . $trabajador->id,
-            'nombre' => 'required|string',
-            'fecha_nacimiento' => 'required|date',
-            'email' => 'required|email|unique:users,email,' . $trabajador->id
-        ]);
-
-        try {
-            $trabajador->update([
-                'dni' => $request->dni,
-                'name' => $request->nombre,
-                'fecha_nacimiento' => $request->fecha_nacimiento,
-                'email' => $request->email,
-                'rol_id' => 2,
-                'estado' => 1
-            ]);
-
-            return redirect()->route('trabajadores.index')->with('success', 'Trabajador modificado correctamente');
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
-            return redirect()->route('trabajadores.index')->with('error', 'Ocurrió un error al modificar el trabajador');
-        }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function disable(User $trabajador)
-    {
-        try {
-            $trabajador->update(['estado' => 0]);
-
-            return redirect()->route('trabajadores.index')->with('success', 'Trabajador deshabilitado correctamente');
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
-            return redirect()->route('trabajadores.index')->with('error', 'Ocurrió un error al deshabilitar el trabajador');
-        }
-    }
-
-    public function enable(User $trabajador)
-    {
-        try {
-            $trabajador->update(['estado' => 1]);
-
-            return redirect()->route('trabajadores.index')->with('success', 'Trabajador habilitado correctamente');
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
-            return redirect()->route('trabajadores.index')->with('error', 'Ocurrió un error al habilitar el trabajador');
-        }
+        return null;
     }
 }

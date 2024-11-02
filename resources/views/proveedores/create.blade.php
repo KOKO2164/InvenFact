@@ -54,7 +54,7 @@
                     <label for="telefono">Teléfono</label>
                     <input type="text" name="telefono" id="telefono"
                         class="form-control @error('telefono') is-invalid @enderror"
-                        placeholder="Ingrese el telefono del Proveedor" value="{{ old('telefono') }}" minlength="9">
+                        placeholder="Ingrese el telefono del Proveedor" value="{{ old('telefono') }}" minlength="7" maxlength="9">
                     @error('telefono')
                         <div class="invalid-feedback">
                             <strong>{{ $message }}</strong>

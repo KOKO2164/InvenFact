@@ -15,25 +15,25 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('categorias.update', $categoria) }}" method="POST" id="categoriaUpdateForm">
+            <form action="{{ route('categorias.update', $item) }}" method="POST" id="categoriaUpdateForm">
                 @csrf
                 @method('PUT')
                 <div class="form-group">
                     <label for="nombre">Nombre</label>
                     <input type="text" name="nombre" id="nombre"
                         class="form-control @error('nombre') is-invalid @enderror"
-                        placeholder="Ingrese el nombre de la Categoria" value="{{ old('nombre', $categoria->nombre) }}">
+                        placeholder="Ingrese el nombre de la Categoria" value="{{ old('nombre', $item->nombre) }}">
                     @error('nombre')
                         <div class="invalid-feedback">
                             <strong>{{ $message }}</strong>
                         </div>
                     @enderror
                 </div>
-                <div class="form-group
+                <div class="form-group">
                     <label for="descripcion">Descripción</label>
                     <input type="text" name="descripcion" id="descripcion"
                         class="form-control @error('descripcion') is-invalid @enderror"
-                        placeholder="Ingrese la descripción de la Categoria" value="{{ old('descripcion', $categoria->descripcion) }}">
+                        placeholder="Ingrese la descripción de la Categoria" value="{{ old('descripcion', $item->descripcion) }}">
                     @error('descripcion')
                         <div class="invalid-feedback">
                             <strong>{{ $message }}</strong>

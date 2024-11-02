@@ -8,13 +8,14 @@
         module="Compra" />
 @stop
 @section('table')
-    <x-data-table :data="$compras" :titles="['Código', 'Fecha', 'Proveedor', 'Total', 'Estado', 'Acciones']" :columns="[
+    <x-data-table :info="$items" :titles="['Código', 'Fecha', 'Proveedor', 'Total', 'Estado', 'Acciones']" :columns="[
         ['key' => 'codigo'],
         ['key' => 'fecha'],
         ['key' => 'proveedor', 'relationship' => true, 'attribute' => 'nombre'],
         ['key' => 'total'],
         ['key' => 'estado', 'relationship' => true, 'attribute' => 'nombre'],
     ]" :routes="[
-        'edit' => 'compras.edit'
-    ]" />
+        'edit' => 'compras.edit',
+        'update-estado' => 'compras.update-estado',
+    ]" :otherModels="$otherModels" />
 @stop

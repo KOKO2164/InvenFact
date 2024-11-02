@@ -8,7 +8,7 @@
         module="Producto" />
 @stop
 @section('table')
-    <x-data-table :data="$productos" :titles="['Nombre', 'Categoría', 'Descripción', 'Precio', 'Stock', 'Ubicación', 'Estado', 'Acciones']" 
+    <x-data-table :info="$items" :titles="['Nombre', 'Categoría', 'Descripción', 'Precio', 'Stock', 'Ubicación', 'Estado', 'Acciones']" 
     :columns="[
         ['key' => 'nombre'], 
         ['key' => 'categoria', 'relationship' => true, 'attribute' => 'nombre'],
@@ -24,4 +24,4 @@
         'enable' => 'productos.enable',
     ]" />
 @stop
-@section('footer-1', $productos->links())
+@section('footer-1', $items->links())

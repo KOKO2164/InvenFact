@@ -1,12 +1,12 @@
 @extends('adminlte::page')
-@section('title', 'Editar Proveedor')
+@section('title', 'Registrar Cliente')
 @section('content_header')
     <div class="row">
         <div class="col">
-            <h1>Editar Proveedor</h1>
+            <h1>Registrar Cliente</h1>
         </div>
         <div class="col d-flex justify-content-end">
-            <a href="{{ route('proveedores.index') }}" class="btn btn-secondary">
+            <a href="{{ route('clientes.index') }}" class="btn btn-secondary">
                 <i class="fas fa-reply"></i> Volver
             </a>
         </div>
@@ -15,26 +15,14 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('proveedores.update', $item->id) }}" method="POST" id="proveedorUpdateForm">
+            <form action="{{ route('clientes.store') }}" method="POST" id="clienteStoreForm">
                 @csrf
-                @method('PUT')
                 <div class="form-group">
                     <label for="nombre">Nombre</label>
                     <input type="text" name="nombre" id="nombre"
                         class="form-control @error('nombre') is-invalid @enderror"
-                        placeholder="Ingrese el nombre del Proveedor" value="{{ $item->nombre }}">
+                        placeholder="Ingrese el nombre del Cliente" value="{{ old('nombre') }}">
                     @error('nombre')
-                        <div class="invalid-feedback">
-                            <strong>{{ $message }}</strong>
-                        </div>
-                    @enderror
-                </div>
-                <div class="form-group">
-                    <label for="ruc">RUC</label>
-                    <input type="string" name="ruc" id="ruc"
-                        class="form-control @error('ruc') is-invalid @enderror" placeholder="Ingrese el ruc del Proveedor"
-                        value="{{ $item->ruc }}" minlength="11" maxlength="11">
-                    @error('ruc')
                         <div class="invalid-feedback">
                             <strong>{{ $message }}</strong>
                         </div>
@@ -44,7 +32,7 @@
                     <label for="email">Email</label>
                     <input type="email" name="email" id="email"
                         class="form-control @error('email') is-invalid @enderror"
-                        placeholder="Ingrese el email del Proveedor" value="{{ $item->email }}">
+                        placeholder="Ingrese el email del Cliente" value="{{ old('email') }}">
                     @error('email')
                         <div class="invalid-feedback">
                             <strong>{{ $message }}</strong>
@@ -55,7 +43,7 @@
                     <label for="telefono">Teléfono</label>
                     <input type="text" name="telefono" id="telefono"
                         class="form-control @error('telefono') is-invalid @enderror"
-                        placeholder="Ingrese el telefono del Proveedor" value="{{ $item->telefono }}" minlength="9">
+                        placeholder="Ingrese el telefono del Cliente" value="{{ old('telefono') }}" minlength="7" maxlength="9">
                     @error('telefono')
                         <div class="invalid-feedback">
                             <strong>{{ $message }}</strong>
@@ -66,7 +54,7 @@
                     <label for="direccion">Dirección</label>
                     <input type="text" name="direccion" id="direccion"
                         class="form-control @error('direccion') is-invalid @enderror"
-                        placeholder="Ingrese la dirección del Proveedor" value="{{ $item->direccion }}">
+                        placeholder="Ingrese la dirección del Cliente" value="{{ old('direccion') }}">
                     @error('direccion')
                         <div class="invalid-feedback">
                             <strong>{{ $message }}</strong>
@@ -76,9 +64,7 @@
             </form>
         </div>
         <div class="card-footer">
-            <button type="submit" form="proveedorUpdateForm" class="btn btn-primary">
-                <i class="fas fa-save"></i> Guardar
-            </button>
+            <button type="submit" class="btn btn-primary" form="clienteStoreForm">Registrar Cliente</button>
         </div>
     </div>
 @stop

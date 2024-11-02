@@ -7,7 +7,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach ($data as $item)
+        @foreach ($info as $item)
             <tr>
                 @foreach ($columns as $column)
                     @if (isset($column['relationship']) && $column['relationship'])
@@ -17,6 +17,22 @@
                                     {{ $item->{$column['key']}->{$column['attribute']} }}
                                 </span>
                             </td>
+                        @elseif ($column['key'] === 'estado')
+                            <form action="{{ route($routes['update-estado'], $item) }}" method="POST">
+                                @csrf
+                                @method('patch')
+                                <td>
+                                    <select name="estado_id" id="estado" class="form-control"
+                                        onchange="this.form.submit()">
+                                        @foreach ($otherModels['estados'] as $estado)
+                                            <option value="{{ $estado->id }}"
+                                                {{ $item->{$column['key']}->id === $estado->id ? 'selected' : '' }}>
+                                                {{ $estado->nombre }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                            </form>
                         @else
                             <td>{{ $item->{$column['key']}->{$column['attribute']} }}</td>
                         @endif
@@ -38,7 +54,7 @@
                     </a>
                     @if (isset($routes['disable']) && isset($routes['enable']))
                         @if ($item->estado)
-                            @if ($item->id === auth()->user()->id)
+                            @if ($item->id === auth()->user()->id && $item instanceof App\Models\User)
                                 <button class="btn btn-danger" disabled>
                                     <i class="fas fa-lock"></i>
                                 </button>

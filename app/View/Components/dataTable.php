@@ -8,7 +8,7 @@ use Illuminate\View\Component;
 
 class dataTable extends Component
 {
-    public $data;
+    public $info;
     public $titles;
     public $columns;
     public $routes;
@@ -16,9 +16,9 @@ class dataTable extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct($data, $titles, $columns, $routes)
+    public function __construct($info, $titles, $columns, $routes)
     {
-        $this->data = $data;
+        $this->info = $info;
         $this->titles = $titles;
         $this->columns = $columns;
         $this->routes = $routes;

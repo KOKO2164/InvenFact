@@ -6,7 +6,7 @@
             <h1>Registrar Trabajador</h1>
         </div>
         <div class="col d-flex justify-content-end">
-            <a href="{{ route('trabajadores.index') }}" class="btn btn-secondary">
+            <a href="{{ route('users.index') }}" class="btn btn-secondary">
                 <i class="fas fa-reply"></i> Volver
             </a>
         </div>
@@ -15,7 +15,7 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('trabajadores.store') }}" method="POST" id="trabajadorStoreForm">
+            <form action="{{ route('users.store') }}" method="POST" id="trabajadorStoreForm">
                 @csrf
                 <div class="form-group">
                     <label for="dni">DNI</label>
@@ -30,10 +30,10 @@
                 </div>
                 <div class="form-group">
                     <label for="nombre">Nombre</label>
-                    <input type="text" name="nombre" id="nombre"
-                        class="form-control @error('nombre') is-invalid @enderror"
-                        placeholder="Ingrese el nombre del trabajador" value="{{ old('nombre') }}">
-                    @error('nombre')
+                    <input type="text" name="name" id="nombre"
+                        class="form-control @error('name') is-invalid @enderror"
+                        placeholder="Ingrese el nombre del trabajador" value="{{ old('name') }}">
+                    @error('name')
                         <div class="invalid-feedback">
                             <strong>{{ $message }}</strong>
                         </div>

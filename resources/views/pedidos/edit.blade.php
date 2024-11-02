@@ -1,9 +1,9 @@
 @extends('adminlte::page')
-@section('title', 'Pedido' . $pedido->codigo)
+@section('title', 'Pedido' . $item->codigo)
 @section('content_header')
     <div class="row">
         <div class="col">
-            <h1>Pedido {{ $pedido->codigo }}</h1>
+            <h1>Pedido {{ $item->codigo }}</h1>
         </div>
         <div class="col d-flex justify-content-end">
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalBuscarProductos">
@@ -21,15 +21,15 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <form id="pedidoUpdateForm" action="{{ route('pedidos.update', $pedido->id) }}" method="POST">
+            <form action="{{ route('pedidos.update', $item) }}" method="POST" id="pedidoUpdateForm">
                 @csrf
                 @method('PUT')
                 <div class="row">
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="codigo">Código</label>
-                            <input type="text" class="form-control" id="codigo" name="codigo"
-                                value="{{ $pedido->codigo }}" readonly>
+                            <input type="text" class="form-control @error('codigo') is-invalid @enderror" id="codigo"
+                                name="codigo" value="{{ $item->codigo }}" readonly>
                             @error('codigo')
                                 <div class="invalid-feedback">
                                     <strong>{{ $message }}</strong>
@@ -37,33 +37,15 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="trabajador">Trabajador</label>
-                            <select name="trabajador" id="trabajador"
-                                class="form-control @error('trabajador') is-invalid @enderror">
-                                <option value="">Seleccione un trabajador</option>
-                                @foreach ($trabajadores as $trabajador)
-                                    <option value="{{ $trabajador->id }}" @if ($pedido->trabajador_id == $trabajador->id) selected @endif>
-                                        {{ $trabajador->name }}</option>
-                                @endforeach
-                            </select>
-                            @error('trabajador')
-                                <div class="invalid-feedback">
-                                    <strong>{{ $message }}</strong>
-                                </div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label for="cliente">Cliente</label>
                             <select name="cliente" id="cliente"
                                 class="form-control @error('cliente') is-invalid @enderror">
                                 <option value="">Seleccione un cliente</option>
-                                @foreach ($clientes as $cliente)
-                                    <option value="{{ $cliente->id }}" @if ($pedido->cliente_id == $cliente->id) selected @endif>
-                                        {{ $cliente->nombre }}</option>
+                                @foreach ($otherModels['clientes'] as $model)
+                                    <option value="{{ $model->id }}" @if ($item->cliente_id == $model->id) selected @endif>
+                                        {{ $model->nombre }}</option>
                                 @endforeach
                             </select>
                             @error('cliente')
@@ -73,11 +55,11 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="plazo">Plazo</label>
                             <input type="text" name="plazo" id="plazo"
-                                class="form-control @error('plazo') is-invalid @enderror" value="{{ $pedido->plazo }}">
+                                class="form-control @error('plazo') is-invalid @enderror" value="{{ $item->plazo }}">
                             @error('plazo')
                                 <div class="invalid-feedback">
                                     <strong>{{ $message }}</strong>
@@ -102,11 +84,11 @@
                     </tr>
                 </thead>
                 <tbody id="tablaDetallesPedidos">
-                    @if ($pedido->detallePedidos->count() > 0)
+                    @if ($item->detallePedidos->count() > 0)
                         @php
                             $total = 0;
                         @endphp
-                        @foreach ($pedido->detallePedidos as $detallePedido)
+                        @foreach ($item->detallePedidos as $detallePedido)
                             @php
                                 $total += $detallePedido->cantidad * $detallePedido->producto->precio;
                             @endphp
@@ -117,7 +99,9 @@
                                 <td>{{ $detallePedido->producto->precio }}</td>
                                 <td>{{ $detallePedido->cantidad * $detallePedido->producto->precio }}</td>
                                 <td class="d-none">{{ $detallePedido->producto->id }}</td>
-                                <td><button type="button" class="btn btn-danger" onclick="eliminarDetallePedido(event, {{ $detallePedido->producto->id }})"><i class="fas fa-trash"></i></button></td>
+                                <td><button type="button" class="btn btn-danger"
+                                        onclick="eliminarDetallePedido(event, {{ $detallePedido->producto->id }})"><i
+                                            class="fas fa-trash"></i></button></td>
                             </tr>
                         @endforeach
                         <tr>
@@ -243,14 +227,14 @@
             producto_id = parseInt(e.target.producto_id.value);
 
             try {
-                const response = await fetch('{{ route('detalles-pedidos.index', $pedido->id) }}');
+                const response = await fetch('{{ route('detalles-pedidos.index', $item->id) }}');
                 var detalles = await response.json();
 
                 const detalleExistente = detalles.find(detalle => detalle.detalle.producto_id === producto_id);
 
                 if (detalleExistente) {
                     const cantidad = detalleExistente.detalle.cantidad + 1;
-                    await fetch(`{{ route('detalles-pedidos.update', $pedido->id) }}`, {
+                    await fetch(`{{ route('detalles-pedidos.update', $item->id) }}`, {
                         method: 'PATCH',
                         headers: {
                             'Content-Type': 'application/json',
@@ -262,7 +246,7 @@
                         })
                     });
                 } else {
-                    const source = await fetch('{{ route('detalles-pedidos.store', $pedido->id) }}', {
+                    const source = await fetch('{{ route('detalles-pedidos.store', $item->id) }}', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -282,7 +266,7 @@
 
         async function consultarProductos() {
             try {
-                const source = await fetch('{{ route('detalles-pedidos.index', $pedido->id) }}');
+                const source = await fetch('{{ route('detalles-pedidos.index', $item->id) }}');
                 const data = await source.json();
                 lineas = data.length;
                 mostrarProductos(data);
@@ -328,7 +312,7 @@
             const cantidad = parseInt(e.target.value);
             const producto_id = parseInt(e.target.parentElement.parentElement.children[4].innerText);
 
-            fetch(`{{ route('detalles-pedidos.update', $pedido->id) }}`, {
+            fetch(`{{ route('detalles-pedidos.update', $item->id) }}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -346,7 +330,7 @@
         function eliminarDetallePedido(e, producto_id) {
             e.preventDefault();
 
-            fetch(`{{ route('detalles-pedidos.destroy', $pedido->id) }}`, {
+            fetch(`{{ route('detalles-pedidos.destroy', $item->id) }}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

@@ -37,11 +37,6 @@ class Compra extends Model
         return $this->belongsTo(Estado::class);
     }
 
-    public function trabajadorProveedor()
-    {
-        return $this->belongsTo(TrabajadorProveedor::class);
-    }
-
     public function detalleCompras()
     {
         return $this->hasMany(DetalleCompra::class);

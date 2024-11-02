@@ -43,7 +43,7 @@
                     <label for="precio">Precio</label>
                     <input type="number" name="precio" id="precio"
                         class="form-control @error('precio') is-invalid @enderror"
-                        placeholder="Ingrese el precio del Producto" value="{{ old('precio') }}">
+                        placeholder="Ingrese el precio del Producto" value="{{ old('precio') }}" min="1" step="0.01">
                     @error('precio')
                         <div class="invalid-feedback">
                             <strong>{{ $message }}</strong>
@@ -54,7 +54,7 @@
                     <label for="stock">Stock</label>
                     <input type="number" name="stock" id="stock"
                         class="form-control @error('stock') is-invalid @enderror"
-                        placeholder="Ingrese el stock del Producto" value="{{ old('stock') }}">
+                        placeholder="Ingrese el stock del Producto" value="{{ old('stock') }}" min="1">
                     @error('stock')
                         <div class="invalid-feedback">
                             <strong>{{ $message }}</strong>
@@ -74,14 +74,14 @@
                 </div>
                 <div class="form-group">
                     <label for="categoria">Categoría</label>
-                    <select name="categoria" id="categoria"
-                        class="form-control @error('categoria') is-invalid @enderror">
+                    <select name="categoria_id" id="categoria"
+                        class="form-control @error('categoria_id') is-invalid @enderror">
                         <option value="">Seleccione una categoría</option>
-                        @foreach ($categorias as $categoria)
-                            <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
+                        @foreach ($otherModels['categorias'] as $otherModel)
+                            <option value="{{ $otherModel->id }}">{{ $otherModel->nombre }}</option>
                         @endforeach
                     </select>
-                    @error('categoria')
+                    @error('categoria_id')
                         <div class="invalid-feedback">
                             <strong>{{ $message }}</strong>
                         </div>

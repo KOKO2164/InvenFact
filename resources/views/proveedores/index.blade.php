@@ -8,7 +8,7 @@
         module="Proveedor" />
 @stop
 @section('table')
-    <x-data-table :data="$proveedores" :titles="['Nombre', 'RUC', 'Correo', 'Teléfono', 'Dirección', 'Estado', 'Acciones']"
+    <x-data-table :info="$items" :titles="['Nombre', 'RUC', 'Correo', 'Teléfono', 'Dirección', 'Estado', 'Acciones']"
         :columns="[
             ['key' => 'nombre'],
             ['key' => 'ruc'],
@@ -22,4 +22,4 @@
             'enable' => 'proveedores.enable',
         ]" />
 @stop
-@section('footer-1', $proveedores->links())
+@section('footer-1', $items->links())

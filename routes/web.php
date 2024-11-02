@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\CompraController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DetalleCompraController;
@@ -10,7 +11,6 @@ use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,9 +30,9 @@ Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::resource('/trabajadores', UserController::class)->except('show', 'destroy')->parameters(['trabajadores' => 'trabajador'])->middleware('auth');
-Route::patch('/trabajadores/{trabajador}/deshabilitar', [UserController::class, 'disable'])->name('trabajadores.disable')->middleware('auth');
-Route::patch('/trabajadores/{trabajador}/habilitar', [UserController::class, 'enable'])->name('trabajadores.enable')->middleware('auth');
+Route::resource('/trabajadores', UserController::class)->except('show', 'destroy')->names('users')->parameters(['trabajadores' => 'trabajador'])->middleware('auth');
+Route::patch('/trabajadores/{trabajador}/deshabilitar', [UserController::class, 'disable'])->name('users.disable')->middleware('auth');
+Route::patch('/trabajadores/{trabajador}/habilitar', [UserController::class, 'enable'])->name('users.enable')->middleware('auth');
 
 Route::resource('/proveedores', ProveedorController::class)->except('show', 'destroy')->parameters(['proveedores' => 'proveedor'])->middleware('auth');
 Route::patch('/proveedores/{proveedor}/deshabilitar', [ProveedorController::class, 'disable'])->name('proveedores.disable')->middleware('auth');
@@ -46,24 +46,24 @@ Route::resource('/productos', ProductoController::class)->except('show', 'destro
 Route::patch('/productos/{producto}/deshabilitar', [ProductoController::class, 'disable'])->name('productos.disable')->middleware('auth');
 Route::patch('/productos/{producto}/habilitar', [ProductoController::class, 'enable'])->name('productos.enable')->middleware('auth');
 
-Route::resource('/compras', CompraController::class)->except('show', 'destroy')->parameters(['compras' => 'compra'])->middleware('auth');
+Route::resource('/compras', CompraController::class)->except('show', 'destroy')->parameters(['compras' => 'item'])->middleware('auth');
 Route::get('/compras/{compra}/detalle', [DetalleCompraController::class, 'index'])->name('detalles-compras.index');
 Route::post('/compras/{compra}/detalle', [DetalleCompraController::class, 'store'])->name('detalles-compras.store');
 Route::patch('/compras/{compra}/detalle', [DetalleCompraController::class, 'update'])->name('detalles-compras.update');
 Route::delete('/compras/{compra}/detalle', [DetalleCompraController::class, 'destroy'])->name('detalles-compras.destroy');
+Route::patch('/compras/{compra}/update-estado', [CompraController::class, 'updateEstado'])->name('compras.update-estado')->middleware('auth');
 
-Route::resource('/pedidos', PedidoController::class)->except('show', 'destroy')->parameters(['pedidos' => 'pedido'])->middleware('auth');
+Route::resource('/clientes', ClienteController::class)->except('show', 'destroy')->parameters(['clientes' => 'cliente'])->middleware('auth');
+Route::patch('/clientes/{cliente}/deshabilitar', [ClienteController::class, 'disable'])->name('clientes.disable')->middleware('auth');
+Route::patch('/clientes/{cliente}/habilitar', [ClienteController::class, 'enable'])->name('clientes.enable')->middleware('auth');
+
+Route::resource('/pedidos', PedidoController::class)->except('show', 'destroy')->parameters(['pedidos' => 'item'])->middleware('auth');
 Route::get('/pedidos/{pedido}/detalle', [DetallePedidoController::class, 'index'])->name('detalles-pedidos.index');
 Route::post('/pedidos/{pedido}/detalle', [DetallePedidoController::class, 'store'])->name('detalles-pedidos.store');
 Route::patch('/pedidos/{pedido}/detalle', [DetallePedidoController::class, 'update'])->name('detalles-pedidos.update');
 Route::delete('/pedidos/{pedido}/detalle', [DetallePedidoController::class, 'destroy'])->name('detalles-pedidos.destroy');
+Route::patch('/pedidos/{pedido}/update-estado', [PedidoController::class, 'updateEstado'])->name('pedidos.update-estado')->middleware('auth');
 
-Route::post('/obtener-trabajadores', function (\Illuminate\Http\Request $request) {
-    return response()->json(\App\Models\TrabajadorProveedor::where([
-        ['proveedor_id', $request->proveedor_id],
-        ['estado', 1]
-    ])->get());
-})->name('obtener-trabajadores')->middleware('auth');
 Route::post('/obtener-productos', function (\Illuminate\Http\Request $request) {
     $request->validate([
         'producto' => 'required|string'

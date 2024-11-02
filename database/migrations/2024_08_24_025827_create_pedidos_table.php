@@ -18,7 +18,7 @@ return new class extends Migration
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('cliente_id')->constrained('clientes')
                 ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('estado_id')->constrained('estados')
+            $table->foreignId('estado_id')->default(1)->constrained('estados')
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->dateTime('fecha', 0)->useCurrent();
             $table->integer('plazo')->default(0);

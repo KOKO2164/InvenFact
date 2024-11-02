@@ -8,7 +8,7 @@
         module="Categoria" />
 @stop
 @section('table')
-    <x-data-table :data="$categorias" :titles="['Nombre', 'Descripción', 'Estado', 'Acciones']" :columns="[
+    <x-data-table :info="$items" :titles="['Nombre', 'Descripción', 'Estado', 'Acciones']" :columns="[
         ['key' => 'nombre'],
         ['key' => 'descripcion'],
         ['key' => 'estado'],
@@ -18,4 +18,4 @@
         'enable' => 'categorias.enable',
     ]" />
 @stop
-@section('footer-1', $categorias->links())
+@section('footer-1', $items->links())

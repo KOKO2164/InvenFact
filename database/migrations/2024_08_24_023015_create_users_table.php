@@ -18,7 +18,7 @@ return new class extends Migration
             $table->date('fecha_nacimiento');
             $table->string('email')->unique();
             $table->string('password');
-            $table->foreignId('rol_id')->constrained('roles')->onUpdate('restrict')->onDelete('restrict');
+            $table->foreignId('rol_id')->default(2)->constrained('roles')->onUpdate('restrict')->onDelete('restrict');
             $table->boolean('estado')->default(true);
             $table->timestamps();
         });
