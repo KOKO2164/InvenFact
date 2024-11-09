@@ -13,10 +13,10 @@ class ClienteController extends Controller
     protected function validationRules()
     {
         return [
-            'nombre' => 'required|string|max:255|regex:/^[a-zA-Z ]+$/',
+            'nombre' => 'required|string|regex:/^(?=.*[\p{L}].*[\p{L}])[\p{L}0-9&\-\'\., ]+$/u',
             'email' => 'required|string|max:255',
-            'direccion' => 'required|string|max:255|regex:/^[\p{L}\p{N}\-#°, ]+$/u',
-            'telefono' => 'required|string|max:255|digits_between:7,9',
+            'direccion' => 'required|string|regex:/^(?=.*[\p{L}].*[\p{L}])[\p{L}\p{N}\-#°,\'\. ]+$/u',
+            'telefono' => 'required|string|regex:/^[0-9\-\+ ]+$/|min:9|max:15',
         ];
     }
     protected function otherModels()

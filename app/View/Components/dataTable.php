@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class dataTable extends Component
+class DataTable extends Component
 {
     public $info;
     public $titles;

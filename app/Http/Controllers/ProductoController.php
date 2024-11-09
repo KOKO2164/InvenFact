@@ -17,7 +17,7 @@ class ProductoController extends Controller
     protected function validationRules($id = null)
     {
         return [
-            'nombre' => 'required|string|unique:productos,nombre,' . $id,
+            'nombre' => 'required|string|regex:/^(?=.*[\p{L}].*[\p{L}])[\p{L}0-9&\-\., ]+$/u|unique:productos,nombre,' . $id,
             'descripcion' => 'required|string',
             'precio' => 'required|numeric|min:1',
             'stock' => 'required|numeric|min:1',

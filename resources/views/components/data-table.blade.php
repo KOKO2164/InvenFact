@@ -25,10 +25,12 @@
                                     <select name="estado_id" id="estado" class="form-control"
                                         onchange="this.form.submit()">
                                         @foreach ($otherModels['estados'] as $estado)
-                                            <option value="{{ $estado->id }}"
-                                                {{ $item->{$column['key']}->id === $estado->id ? 'selected' : '' }}>
-                                                {{ $estado->nombre }}
-                                            </option>
+                                            @if (in_array($estado->id, $item->avaibleStates))
+                                                <option value="{{ $estado->id }}"
+                                                    {{ $item->{$column['key']}->id === $estado->id ? 'selected' : '' }}>
+                                                    {{ $estado->nombre }}
+                                                </option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </td>
@@ -44,14 +46,24 @@
                                 {{ $item->{$column['key']} ? 'Activo' : 'Inactivo' }}
                             </span>
                         </td>
+                    @elseif (isset($column['fecha']) && $column['fecha'])
+                        <td>{{ \Carbon\Carbon::parse($item->{$column['key']})->format('d/m/Y H:i') }}</td>
+                    @elseif (isset($column['calculate']) && $column['calculate'])
+                        <td>
+                            {{ \Carbon\Carbon::parse($item->fecha)->addDays($item->plazo)->format('d/m/Y') }}
+                        </td>
                     @else
                         <td>{{ $item->{$column['key']} }}</td>
                     @endif
                 @endforeach
                 <td>
-                    <a href="{{ route($routes['edit'], $item) }}" class="btn btn-warning">
-                        <i class="fas fa-pencil-alt"></i>
-                    </a>
+                    @if (($item instanceof \App\Models\Compra || $item instanceof \App\Models\Pedido) && $item->estado_id > 1)
+                        <button class="btn btn-warning" disabled><i class="fas fa-pencil-alt"></i></button>
+                    @else
+                        <a href="{{ route($routes['edit'], $item) }}" class="btn btn-warning">
+                            <i class="fas fa-pencil-alt"></i>
+                        </a>
+                    @endif
                     @if (isset($routes['disable']) && isset($routes['enable']))
                         @if ($item->estado)
                             @if ($item->id === auth()->user()->id && $item instanceof App\Models\User)

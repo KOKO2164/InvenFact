@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Compra;
 use Illuminate\Database\Seeder;
 
 class CompraSeeder extends Seeder
@@ -12,6 +12,6 @@ class CompraSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Compra::factory(10)->create();
+        Compra::factory(10)->create();
     }
 }

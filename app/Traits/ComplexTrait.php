@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Schema;
 
 trait ComplexTrait
 {
+    private const INDEX = '.index';
+    private const EDIT = '.edit';
+    
     public function index(Request $request)
     {
         $items = $this->model::where(function ($query) use ($request) {
@@ -30,8 +33,12 @@ trait ComplexTrait
                 $otherModels[$key] = $query->get();
             }
         }
-        
-        return view((new $this->model())->getTable() . '.index', compact('items', 'otherModels'));
+
+        foreach ($items as $item) {
+            $item->avaibleStates = $this->getAvailableStates($item->estado_id);
+        }
+
+        return view((new $this->model())->getTable() . self::INDEX, compact('items', 'otherModels'));
     }
 
     public function create()
@@ -58,10 +65,10 @@ trait ComplexTrait
         try {
             $item = $this->model::create($request->all());
 
-            return redirect()->route((new $this->model())->getTable() . '.edit', $item)->with('success', 'Registro creado correctamente');
+            return redirect()->route((new $this->model())->getTable() . self::EDIT, $item)->with('success', 'Registro creado correctamente');
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return redirect()->route((new $this->model())->getTable() . '.index')->with('error', 'Ocurrió un error al crear el registro');
+            return redirect()->route((new $this->model())->getTable() . self::INDEX)->with('error', 'Ocurrió un error al crear el registro');
         }
     }
 
@@ -79,7 +86,7 @@ trait ComplexTrait
             }
         }
 
-        return view((new $this->model())->getTable() . '.edit', compact(
+        return view((new $this->model())->getTable() . self::EDIT, compact(
             'item',
             'otherModels'
         ));
@@ -92,10 +99,10 @@ trait ComplexTrait
             $item = $this->model::find($id);
             $item->update($request->all());
 
-            return redirect()->route((new $this->model())->getTable() . '.edit', $item)->with('success', 'Registro actualizado correctamente');
+            return redirect()->route((new $this->model())->getTable() . self::EDIT, $item)->with('success', 'Registro actualizado correctamente');
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return redirect()->route((new $this->model())->getTable() . '.index')->with('error', 'Ocurrió un error al actualizar el registro');
+            return redirect()->route((new $this->model())->getTable() . self::INDEX)->with('error', 'Ocurrió un error al actualizar el registro');
         }
     }
 
@@ -103,6 +110,17 @@ trait ComplexTrait
     {
         try {
             $item = $this->model::find($id);
+            $availableStates = $this->getAvailableStates($item->estado_id);
+
+            if (!in_array($request->estado_id, $availableStates)) {
+                return redirect()->route((new $this->model())->getTable() . self::INDEX)
+                    ->with('error', 'No se puede cambiar el estado a ese valor');
+            }
+            if ($request->estado_id != 1 && $item->total == 0) {
+                return redirect()->route((new $this->model())->getTable() . self::INDEX)
+                    ->with('warning', 'No se puede cambiar el estado a ese valor, no hay productos en la compra');
+                
+            }
 
             if ($request->estado_id == 7) {
                 if ($item instanceof Compra) {
@@ -115,9 +133,9 @@ trait ComplexTrait
                 } else {
                     foreach ($item->detallePedidos as $detalle) {
                         $producto = Producto::find($detalle->producto_id);
-                        
+
                         if ($detalle->cantidad > $producto->stock) {
-                            return redirect()->route((new $this->model())->getTable() . '.index')->with('error', 'No se puede cambiar el estado a finalizado, la cantidad solicitada supera el stock actual');
+                            return redirect()->route((new $this->model())->getTable() . self::INDEX)->with('error', 'No se puede cambiar el estado a finalizado, la cantidad solicitada supera el stock actual');
                         }
                         $producto->update([
                             'stock' => $producto->stock - $detalle->cantidad
@@ -130,10 +148,26 @@ trait ComplexTrait
                 'estado_id' => $request->estado_id
             ]);
 
-            return redirect()->route((new $this->model())->getTable() . '.index')->with('success', 'Estado actualizado correctamente');
+            return redirect()->route((new $this->model())->getTable() . self::INDEX)->with('success', 'Estado actualizado correctamente');
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return redirect()->route((new $this->model())->getTable() . '.index')->with('error', 'Ocurrió un error al actualizar el estado');
+            return redirect()->route((new $this->model())->getTable() . self::INDEX)->with('error', 'Ocurrió un error al actualizar el estado');
         }
+    }
+
+    public function getAvailableStates($currentStateId)
+    {
+        // Define las transiciones permitidas de estados
+        $stateTransitions = [
+            1 => [1, 2],
+            2 => [2, 3, 4],
+            3 => [3, 5],
+            4 => [4],
+            5 => [5, 6],
+            6 => [6, 7],
+            7 => [7],
+        ];
+
+        return isset($stateTransitions[$currentStateId]) ? $stateTransitions[$currentStateId] : [];
     }
 }

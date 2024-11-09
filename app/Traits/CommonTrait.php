@@ -7,19 +7,19 @@ use Illuminate\Support\Facades\Log;
 
 trait CommonTrait
 {
-    public function index(Request $request)
-    {
-        $items = $this->model::where(function ($query) use ($request) {
-            if ($request->has($this->searchField)) {
-                $searchValue = $request->input($this->searchField);
-                $query->where($this->searchField, 'like', "%$searchValue%");
-            }
-        })->paginate(10);
+    private $tableCache;
+    private const INDEX = '.index';
 
-        return view((new $this->model())->getTable() . '.index', compact('items'));
+    public function getTableName()
+    {
+        if (!$this->tableCache) {
+            $this->tableCache = (new $this->model())->getTable();
+        }
+
+        return $this->tableCache;
     }
 
-    public function create()
+    public function getOtherModelsData()
     {
         $otherModels = [];
         if ($this->otherModels()) {
@@ -28,7 +28,27 @@ trait CommonTrait
             }
         }
 
-        return view((new $this->model())->getTable() . '.create', compact('otherModels'));
+        return $otherModels;
+    }
+
+    public function index(Request $request)
+    {
+        $query = $this->model::query();
+        if ($request->has($this->searchField)) {
+            $searchValue = $request->input($this->searchField);
+            $query->where($this->searchField, 'like', "%$searchValue%");
+        }
+
+        $items = $query->paginate(10);
+
+        return view($this->getTableName() . self::INDEX, compact('items'));
+    }
+
+    public function create()
+    {
+        $otherModels = $this->getOtherModelsData();
+
+        return view($this->getTableName() . '.create', compact('otherModels'));
     }
 
     public function store(Request $request)
@@ -36,29 +56,27 @@ trait CommonTrait
         $request->validate($this->validationRules());
 
         try {
-            $item = $this->model::create($request->all());
+            $data = $request->all();
+
             if ($request->has('password')) {
-                $item->update(['password' => bcrypt($request->input('password'))]);
+                $data['password'] = bcrypt($request->input('password'));
             }
 
-            return redirect()->route((new $this->model())->getTable() . '.index')->with('success', 'Registro creado correctamente');
+            $this->model::create($data);
+
+            return redirect()->route($this->getTableName() . self::INDEX)->with('success', 'Registro creado correctamente');
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return redirect()->route((new $this->model())->getTable() . '.index')->with('error', 'Ocurrió un error al crear el registro');
+            return redirect()->route($this->getTableName() . self::INDEX)->with('error', 'Ocurrió un error al crear el registro');
         }
     }
 
     public function edit($id)
     {
         $item = $this->model::find($id);
-        $otherModels = [];
-        if ($this->otherModels()) {
-            foreach ($this->otherModels() as $key => $model) {
-                $otherModels[$key] = $model::where('estado', 1)->get();
-            }
-        }
+        $otherModels = $this->getOtherModelsData();
 
-        return view((new $this->model())->getTable() . '.edit', compact(
+        return view($this->getTableName() . '.edit', compact(
             'item',
             'otherModels'
         ));
@@ -72,10 +90,10 @@ trait CommonTrait
             $item = $this->model::find($id);
             $item->update($request->all());
 
-            return redirect()->route((new $this->model())->getTable() . '.index')->with('success', 'Registro modificado correctamente');
+            return redirect()->route((new $this->model())->getTable() . self::INDEX)->with('success', 'Registro modificado correctamente');
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return redirect()->route((new $this->model())->getTable() . '.index')->with('error', 'Ocurrió un error al modificar el registro');
+            return redirect()->route((new $this->model())->getTable() . self::INDEX)->with('error', 'Ocurrió un error al modificar el registro');
         }
     }
 
@@ -85,10 +103,10 @@ trait CommonTrait
             $item = $this->model::find($id);
             $item->update(['estado' => 0]);
 
-            return redirect()->route((new $this->model())->getTable() . '.index')->with('success', 'Registro deshabilitado correctamente');
+            return redirect()->route((new $this->model())->getTable() . self::INDEX)->with('success', 'Registro deshabilitado correctamente');
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return redirect()->route((new $this->model())->getTable() . '.index')->with('error', 'Ocurrió un error al deshabilitar el registro');
+            return redirect()->route((new $this->model())->getTable() . self::INDEX)->with('error', 'Ocurrió un error al deshabilitar el registro');
         }
     }
 
@@ -98,10 +116,10 @@ trait CommonTrait
             $item = $this->model::find($id);
             $item->update(['estado' => 1]);
 
-            return redirect()->route((new $this->model())->getTable() . '.index')->with('success', 'Registro habilitado correctamente');
+            return redirect()->route((new $this->model())->getTable() . self::INDEX)->with('success', 'Registro habilitado correctamente');
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return redirect()->route((new $this->model())->getTable() . '.index')->with('error', 'Ocurrió un error al habilitar el registro');
+            return redirect()->route((new $this->model())->getTable() . self::INDEX)->with('error', 'Ocurrió un error al habilitar el registro');
         }
     }
 }

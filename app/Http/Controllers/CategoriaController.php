@@ -16,7 +16,7 @@ class CategoriaController extends Controller
     protected function validationRules($id = null)
     {
         return [
-            'nombre' => 'required|string|regex:/^[a-zA-Z0-9&\- ]+$/|unique:categorias,nombre,' . $id,
+            'nombre' => 'required|string|regex:/^[\p{L}0-9&\- ]+$/u|unique:categorias,nombre,' . $id,
             'descripcion' => 'required|string'
         ];
     }

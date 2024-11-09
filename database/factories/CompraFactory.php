@@ -25,7 +25,6 @@ class CompraFactory extends Factory
             'codigo' => $this->faker->unique()->regexify('[C]{1}[0-9]{3}'),
             'trabajador_id' => User::inRandomOrder()->first()->id,
             'proveedor_id' => $proveedorId,
-            'trabajador_proveedor_id' => TrabajadorProveedor::where('proveedor_id', $proveedorId)->inRandomOrder()->first()->id,
             'estado_id' => Estado::inRandomOrder()->first()->id,
             'fecha' => $this->faker->dateTimeThisYear(),
             'plazo' => $this->faker->numberBetween(0, 30),

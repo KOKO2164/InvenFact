@@ -23,6 +23,9 @@
             @if (session('error'))
                 sessionStorage.setItem('error', '{{ session('error') }}');
             @endif
+            @if (session('warning'))
+                sessionStorage.setItem('warning', '{{ session('warning') }}');
+            @endif
 
             if (sessionStorage.getItem('success')) {
                 Swal.fire({
@@ -43,6 +46,16 @@
                     timer: 3000
                 });
                 sessionStorage.removeItem('error');
+            }
+            if (sessionStorage.getItem('warning')) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Advertencia',
+                    text: sessionStorage.getItem('warning'),
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+                sessionStorage.removeItem('warning');
             }
         };
     </script>

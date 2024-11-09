@@ -17,7 +17,7 @@ class UserController extends Controller
     {
         $rules = [
             'dni' => 'required|numeric|digits:8|unique:users,dni,' . $id,
-            'name' => 'required|string',
+            'name' => 'required|string|regex:/^(?=.*[\p{L}].*[\p{L}])[\p{L}0-9&\-\'\., ]+$/u',
             'fecha_nacimiento' => 'required|date',
             'email' => 'required|email|unique:users,email,' . $id
         ];

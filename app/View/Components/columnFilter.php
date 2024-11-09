@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class columnFilter extends Component
+class ColumnFilter extends Component
 {
     public $routes;
     public $columnSize;

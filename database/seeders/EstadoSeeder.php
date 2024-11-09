@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Estado;
 use Illuminate\Database\Seeder;
 
 class EstadoSeeder extends Seeder
@@ -23,7 +23,7 @@ class EstadoSeeder extends Seeder
         ];
 
         foreach ($estados as $estado) {
-            \App\Models\Estado::create($estado);
+            Estado::create($estado);
         }
     }
 }

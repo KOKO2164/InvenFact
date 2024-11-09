@@ -1,5 +1,6 @@
 @extends('adminlte::page')
 @section('title', 'Dashboard')
+@section('plugins.Chartjs', true)
 @section('content_header')
     <h1>Dashboard</h1>
 @stop
@@ -163,7 +164,6 @@
     </div>
 @endsection
 @section('js')
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const ctx = document.getElementById('productosPorCategoriaChart').getContext('2d');
         const productosPorCategoriaChart = new Chart(ctx, {

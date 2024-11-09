@@ -64,15 +64,6 @@
                         </div>
                     @enderror
                 </div>
-                {{-- <div class="form-group">
-                    <label for="password">Contraseña</label>
-                    <input type="password" name="password" id="password" class="form-control" placeholder="Ingrese la contraseña del trabajador">
-                </div>
-                @error('password')
-                    <div class="alert alert-danger">
-                        <strong>{{ $message }}</strong>
-                    </div>
-                @enderror --}}
             </form>
         </div>
         <div class="card-footer">

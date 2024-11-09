@@ -8,16 +8,16 @@
         module="Producto" />
 @stop
 @section('table')
-    <x-data-table :info="$items" :titles="['Nombre', 'Categoría', 'Descripción', 'Precio', 'Stock', 'Ubicación', 'Estado', 'Acciones']" 
+    <x-data-table :info="$items" :titles="['Nombre', 'Categoría', 'Descripción', 'Precio', 'Stock', 'Ubicación', 'Estado', 'Acciones']"
     :columns="[
-        ['key' => 'nombre'], 
+        ['key' => 'nombre'],
         ['key' => 'categoria', 'relationship' => true, 'attribute' => 'nombre'],
-        ['key' => 'descripcion'], 
-        ['key' => 'precio'], 
-        ['key' => 'stock'], 
+        ['key' => 'descripcion'],
+        ['key' => 'precio'],
+        ['key' => 'stock'],
         ['key' => 'codigoUbicacion'],
         ['key' => 'estado']
-    ]" 
+    ]"
     :routes="[
         'edit' => 'productos.edit',
         'disable' => 'productos.disable',

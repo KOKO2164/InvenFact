@@ -9,10 +9,10 @@
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalBuscarProductos">
                 <i class="fas fa-plus"></i> Agregar producto
             </button>
-            <button type="submit" form="pedidoUpdateForm" class="btn btn-primary ml-2">
+            <button type="submit" form="pedidoUpdateForm" class="ml-2 btn btn-primary">
                 <i class="fas fa-save"></i> Actualizar
             </button>
-            <a href="{{ route('pedidos.index') }}" class="btn btn-secondary ml-2">
+            <a href="{{ route('pedidos.index') }}" class="ml-2 btn btn-secondary">
                 <i class="fas fa-arrow-left"></i> Volver
             </a>
         </div>
@@ -73,14 +73,14 @@
         </div>
     </div>
     <div class="card">
-        <div class="card-body table-responsive p-0">
+        <div class="p-0 card-body table-responsive">
             <table class="table table-head-fixed text-nowrap">
                 <thead>
                     <tr>
-                        <th>Producto</th>
-                        <th>Cantidad</th>
-                        <th>Precio Unitario</th>
-                        <th>Subtotal</th>
+                        <th id="producto">Producto</th>
+                        <th id="cantidad">Cantidad</th>
+                        <th id="precioUnitario">Precio Unitario</th>
+                        <th id="subtotal">Subtotal</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -129,7 +129,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body p-0">
+                <div class="p-0 modal-body">
                     <form onsubmit="buscarProductos(event)" class="p-3">
                         <div class="form-group">
                             <label for="producto">Producto</label>
@@ -145,7 +145,7 @@
                         <div class="mb-3">
                             <div id="spinnerProductos" class="spinner-border spinner-border-sm d-none" role="status">
                             </div>
-                            <span id="textLoadingProductos" class="d-none ml-2">Cargando...</span>
+                            <span id="textLoadingProductos" class="ml-2 d-none">Cargando...</span>
                         </div>
                     </form>
                     <table class="table table-head-fixed">
