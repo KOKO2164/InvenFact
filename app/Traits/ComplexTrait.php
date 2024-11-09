@@ -124,19 +124,19 @@ trait ComplexTrait
 
             if (!$result['success']) {
                 return redirect()
-                    ->route($this->getTableName() . '.index')
+                    ->route($this->getTableName() . self::INDEX)
                     ->with($result['type'], $result['message']);
             }
 
             $item->update(['estado_id' => $request->estado_id]);
 
             return redirect()
-                ->route($this->getTableName() . '.index')
+                ->route($this->getTableName() . self::INDEX)
                 ->with('success', 'Estado actualizado correctamente');
         } catch (\Exception $e) {
             Log::error('Error actualizando estado: ' . $e->getMessage());
             return redirect()
-                ->route($this->getTableName() . '.index')
+                ->route($this->getTableName() . self::INDEX)
                 ->with('error', 'Ocurrió un error al actualizar el estado');
         }
     }
@@ -144,6 +144,7 @@ trait ComplexTrait
     private function validateAndProcessEstado($item, $nuevoEstado): array
     {
         $availableStates = $this->getAvailableStates($item->estado_id);
+        $result = ['success' => true];
 
         if (!in_array($nuevoEstado, $availableStates)) {
             return [
@@ -163,16 +164,14 @@ trait ComplexTrait
 
         if ($nuevoEstado == 7) {
             $resultInventario = $this->procesarInventario($item);
-            if (!$resultInventario['success']) {
-                return [
-                    'success' => false,
-                    'type' => 'error',
-                    'message' => $resultInventario['message']
-                ];
-            }
+            $result = !$resultInventario['success'] ? [
+                'success' => false,
+                'type' => 'error',
+                'message' => $resultInventario['message']
+            ] : $result;
         }
 
-        return ['success' => true];
+        return $result;
     }
 
     private function procesarInventario($item): array
