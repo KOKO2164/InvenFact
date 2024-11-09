@@ -11,9 +11,19 @@ use Illuminate\Support\Facades\Schema;
 
 trait ComplexTrait
 {
+    private $tableCache;
     private const INDEX = '.index';
     private const EDIT = '.edit';
-    
+
+    public function getTableName()
+    {
+        if (!$this->tableCache) {
+            $this->tableCache = (new $this->model())->getTable();
+        }
+
+        return $this->tableCache;
+    }
+
     public function index(Request $request)
     {
         $items = $this->model::where(function ($query) use ($request) {
@@ -27,7 +37,7 @@ trait ComplexTrait
         if ($this->otherModels()) {
             foreach ($this->otherModels() as $key => $model) {
                 $query = $model::query();
-                if (!Schema::hasColumn((new $model())->getTable(), 'estado') && $this->model::first()) {
+                if (!Schema::hasColumn($this->getTableName(), 'estado') && $this->model::first()) {
                     $query->orderBy('id', 'asc');
                 }
                 $otherModels[$key] = $query->get();
@@ -38,7 +48,7 @@ trait ComplexTrait
             $item->avaibleStates = $this->getAvailableStates($item->estado_id);
         }
 
-        return view((new $this->model())->getTable() . self::INDEX, compact('items', 'otherModels'));
+        return view($this->getTableName() . self::INDEX, compact('items', 'otherModels'));
     }
 
     public function create()
@@ -47,7 +57,7 @@ trait ComplexTrait
         if ($this->otherModels()) {
             foreach ($this->otherModels() as $key => $model) {
                 $query = $model::query();
-                if (Schema::hasColumn((new $model())->getTable(), 'estado')) {
+                if (Schema::hasColumn($this->getTableName(), 'estado')) {
                     $query->where('estado', 1);
                 }
                 $otherModels[$key] = $query->get();
@@ -55,7 +65,7 @@ trait ComplexTrait
         }
         $codigoGenerado = $this->otherVariables();
 
-        return view((new $this->model())->getTable() . '.create', compact('otherModels', 'codigoGenerado'));
+        return view($this->getTableName() . '.create', compact('otherModels', 'codigoGenerado'));
     }
 
     public function store(Request $request)
@@ -65,10 +75,10 @@ trait ComplexTrait
         try {
             $item = $this->model::create($request->all());
 
-            return redirect()->route((new $this->model())->getTable() . self::EDIT, $item)->with('success', 'Registro creado correctamente');
+            return redirect()->route($this->getTableName() . self::EDIT, $item)->with('success', 'Registro creado correctamente');
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return redirect()->route((new $this->model())->getTable() . self::INDEX)->with('error', 'Ocurrió un error al crear el registro');
+            return redirect()->route($this->getTableName() . self::INDEX)->with('error', 'Ocurrió un error al crear el registro');
         }
     }
 
@@ -79,14 +89,14 @@ trait ComplexTrait
         if ($this->otherModels()) {
             foreach ($this->otherModels() as $key => $model) {
                 $query = $model::query();
-                if (Schema::hasColumn((new $model())->getTable(), 'estado')) {
+                if (Schema::hasColumn($this->getTableName(), 'estado')) {
                     $query->where('estado', 1);
                 }
                 $otherModels[$key] = $query->get();
             }
         }
 
-        return view((new $this->model())->getTable() . self::EDIT, compact(
+        return view($this->getTableName() . self::EDIT, compact(
             'item',
             'otherModels'
         ));
@@ -99,60 +109,103 @@ trait ComplexTrait
             $item = $this->model::find($id);
             $item->update($request->all());
 
-            return redirect()->route((new $this->model())->getTable() . self::EDIT, $item)->with('success', 'Registro actualizado correctamente');
+            return redirect()->route($this->getTableName() . self::EDIT, $item)->with('success', 'Registro actualizado correctamente');
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return redirect()->route((new $this->model())->getTable() . self::INDEX)->with('error', 'Ocurrió un error al actualizar el registro');
+            return redirect()->route($this->getTableName() . self::INDEX)->with('error', 'Ocurrió un error al actualizar el registro');
         }
     }
 
     public function updateEstado(Request $request, $id)
     {
         try {
-            $item = $this->model::find($id);
-            $availableStates = $this->getAvailableStates($item->estado_id);
+            $item = $this->model::findOrFail($id);
+            $result = $this->validateAndProcessEstado($item, $request->estado_id);
 
-            if (!in_array($request->estado_id, $availableStates)) {
-                return redirect()->route((new $this->model())->getTable() . self::INDEX)
-                    ->with('error', 'No se puede cambiar el estado a ese valor');
-            }
-            if ($request->estado_id != 1 && $item->total == 0) {
-                return redirect()->route((new $this->model())->getTable() . self::INDEX)
-                    ->with('warning', 'No se puede cambiar el estado a ese valor, no hay productos en la compra');
-                
+            if (!$result['success']) {
+                return redirect()
+                    ->route($this->getTableName() . '.index')
+                    ->with($result['type'], $result['message']);
             }
 
-            if ($request->estado_id == 7) {
-                if ($item instanceof Compra) {
-                    foreach ($item->detalleCompras as $detalle) {
-                        $producto = Producto::find($detalle->producto_id);
-                        $producto->update([
-                            'stock' => $producto->stock + $detalle->cantidad
-                        ]);
-                    }
-                } else {
-                    foreach ($item->detallePedidos as $detalle) {
-                        $producto = Producto::find($detalle->producto_id);
+            $item->update(['estado_id' => $request->estado_id]);
 
-                        if ($detalle->cantidad > $producto->stock) {
-                            return redirect()->route((new $this->model())->getTable() . self::INDEX)->with('error', 'No se puede cambiar el estado a finalizado, la cantidad solicitada supera el stock actual');
-                        }
-                        $producto->update([
-                            'stock' => $producto->stock - $detalle->cantidad
-                        ]);
-                    }
-                }
-            }
-
-            $item->update([
-                'estado_id' => $request->estado_id
-            ]);
-
-            return redirect()->route((new $this->model())->getTable() . self::INDEX)->with('success', 'Estado actualizado correctamente');
+            return redirect()
+                ->route($this->getTableName() . '.index')
+                ->with('success', 'Estado actualizado correctamente');
         } catch (\Exception $e) {
-            Log::error($e->getMessage());
-            return redirect()->route((new $this->model())->getTable() . self::INDEX)->with('error', 'Ocurrió un error al actualizar el estado');
+            Log::error('Error actualizando estado: ' . $e->getMessage());
+            return redirect()
+                ->route($this->getTableName() . '.index')
+                ->with('error', 'Ocurrió un error al actualizar el estado');
         }
+    }
+
+    private function validateAndProcessEstado($item, $nuevoEstado): array
+    {
+        $availableStates = $this->getAvailableStates($item->estado_id);
+
+        if (!in_array($nuevoEstado, $availableStates)) {
+            return [
+                'success' => false,
+                'type' => 'error',
+                'message' => 'No se puede cambiar el estado a ese valor'
+            ];
+        }
+
+        if ($nuevoEstado != 1 && $item->total == 0) {
+            return [
+                'success' => false,
+                'type' => 'warning',
+                'message' => 'No se puede cambiar el estado a ese valor, no hay productos en la compra'
+            ];
+        }
+
+        if ($nuevoEstado == 7) {
+            $resultInventario = $this->procesarInventario($item);
+            if (!$resultInventario['success']) {
+                return [
+                    'success' => false,
+                    'type' => 'error',
+                    'message' => $resultInventario['message']
+                ];
+            }
+        }
+
+        return ['success' => true];
+    }
+
+    private function procesarInventario($item): array
+    {
+        if ($item instanceof Compra) {
+            return $this->actualizarStockCompra($item);
+        }
+        return $this->actualizarStockPedido($item);
+    }
+
+    private function actualizarStockCompra($compra): array
+    {
+        foreach ($compra->detalleCompras as $detalle) {
+            $producto = Producto::findOrFail($detalle->producto_id);
+            $producto->increment('stock', $detalle->cantidad);
+        }
+        return ['success' => true];
+    }
+
+    private function actualizarStockPedido($pedido): array
+    {
+        foreach ($pedido->detallePedidos as $detalle) {
+            $producto = Producto::findOrFail($detalle->producto_id);
+
+            if ($detalle->cantidad > $producto->stock) {
+                return [
+                    'success' => false,
+                    'message' => 'No se puede cambiar el estado a finalizado, la cantidad solicitada supera el stock actual'
+                ];
+            }
+            $producto->decrement('stock', $detalle->cantidad);
+        }
+        return ['success' => true];
     }
 
     public function getAvailableStates($currentStateId)

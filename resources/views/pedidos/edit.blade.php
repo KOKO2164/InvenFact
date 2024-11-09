@@ -77,10 +77,10 @@
             <table class="table table-head-fixed text-nowrap">
                 <thead>
                     <tr>
-                        <th id="producto">Producto</th>
-                        <th id="cantidad">Cantidad</th>
-                        <th id="precioUnitario">Precio Unitario</th>
-                        <th id="subtotal">Subtotal</th>
+                        <th id="productoTH">Producto</th>
+                        <th id="cantidadTH">Cantidad</th>
+                        <th id="precioUnitarioTH">Precio Unitario</th>
+                        <th id="subtotalTH">Subtotal</th>
                         <th></th>
                     </tr>
                 </thead>
