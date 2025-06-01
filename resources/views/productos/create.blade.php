@@ -77,7 +77,7 @@
                     <select name="categoria_id" id="categoria"
                         class="form-control @error('categoria_id') is-invalid @enderror">
                         <option value="">Seleccione una categoría</option>
-                        @foreach ($otherModels['categorias'] as $otherModel)
+                        @foreach ($categorias as $otherModel)
                             <option value="{{ $otherModel->id }}">{{ $otherModel->nombre }}</option>
                         @endforeach
                     </select>

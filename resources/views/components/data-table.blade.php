@@ -11,13 +11,7 @@
             <tr>
                 @foreach ($columns as $column)
                     @if (isset($column['relationship']) && $column['relationship'])
-                        @if ($column['key'] === 'rol')
-                            <td>
-                                <span class="badge badge-primary">
-                                    {{ $item->{$column['key']}->{$column['attribute']} }}
-                                </span>
-                            </td>
-                        @elseif ($column['key'] === 'estado')
+                        @if ($column['key'] === 'estado')
                             <form action="{{ route($routes['update-estado'], $item) }}" method="POST">
                                 @csrf
                                 @method('patch')

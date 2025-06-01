@@ -11,9 +11,6 @@
                 <div class="inner">
                     <h3>Bienvenido, <span id="nombreUsuario">{{ auth()->user()->name }}</span></h3>
                     <h4><span id="correoUsuario">{{ auth()->user()->email }}</span></h4>
-                    <h4>Tu Rol es <span id="rolUsuario"
-                            style="color: rgba(0,150,0,1); font-weight: bold; background: white; padding-right: 4px; padding-left: 4px; border-radius: 10px;">
-                            {{ auth()->user()->rol->nombre }}</span></h4>
                     <h4><span id="fechaActual">{{ \Carbon\Carbon::now()->format('d/m/Y') }}</span>, <span
                             id="horaActual">{{ \Carbon\Carbon::now()->format('H:i:s') }}</span>
                     </h4>

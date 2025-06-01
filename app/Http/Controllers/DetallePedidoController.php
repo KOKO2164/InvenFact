@@ -45,7 +45,8 @@ class DetallePedidoController extends Controller
         DetallePedido::create([
             'pedido_id' => $pedido->id,
             'producto_id' => $request->producto_id,
-            'cantidad' => 1
+            'cantidad' => 1,
+            'precio' => $producto->precio
         ]);
 
         $pedido->update([

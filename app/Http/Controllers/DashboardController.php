@@ -23,7 +23,7 @@ class DashboardController extends Controller
         $totalProductos = Producto::count();
         $totalCategorias = Categoria::count();
         $totalProveedores = Proveedor::count();
-        $totalTrabajadores = User::where("rol_id", 2)->count();
+        $totalTrabajadores = User::count();
 
         return view('welcome', compact(
             'stockMayor',

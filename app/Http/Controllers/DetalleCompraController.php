@@ -43,7 +43,8 @@ class DetalleCompraController extends Controller
         DetalleCompra::create([
             'compra_id' => $compra->id,
             'producto_id' => $request->producto_id,
-            'cantidad' => 1
+            'cantidad' => 1,
+            'precio' => $producto->precio,
         ]);
 
         $compra->update([

@@ -13,7 +13,8 @@ class DetalleCompra extends Model
     protected $fillable = [
         'compra_id',
         'producto_id',
-        'cantidad'
+        'cantidad',
+        'precio'
     ];
 
     public function compra()

@@ -8,12 +8,11 @@
         module="Usuario" />
 @stop
 @section('table')
-    <x-data-table :info="$items" :titles="['DNI', 'Nombre', 'Correo', 'Fecha de Nacimiento', 'Rol', 'Acciones']" :columns="[
+    <x-data-table :info="$items" :titles="['DNI', 'Nombre', 'Correo', 'Fecha de Nacimiento', 'Acciones']" :columns="[
         ['key' => 'dni'],
         ['key' => 'name'],
         ['key' => 'email'],
         ['key' => 'fecha_nacimiento'],
-        ['key' => 'rol', 'relationship' => true, 'attribute' => 'nombre'],
     ]" :routes="[
         'edit' => 'users.edit',
         'disable' => 'users.disable',

@@ -64,6 +64,23 @@
                         </div>
                     @enderror
                 </div>
+                
+                <div class="form-group">
+                    <label for="roles">Rol</label>
+                    <select name="roles[]" id="roles" class="form-control @error('roles') is-invalid @enderror">
+                        <option value="">Seleccione un rol</option>
+                        @foreach($roles as $role)
+                            <option value="{{ $role->name }}" {{ $item->hasRole($role->name) ? 'selected' : '' }}>
+                                {{ $role->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('roles')
+                        <div class="invalid-feedback">
+                            <strong>{{ $message }}</strong>
+                        </div>
+                    @enderror
+                </div>
             </form>
         </div>
         <div class="card-footer">

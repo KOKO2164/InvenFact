@@ -303,36 +303,62 @@ return [
             'text' => 'Gestionar Usuarios',
             'route'  => 'users.index',
             'icon' => 'fas fa-fw fa-users',
+            'can' => 'ver usuarios',
         ],
         [
             'text' => 'Gestionar Clientes',
             'route'  => 'clientes.index',
             'icon' => 'fas fa-fw fa-users',
+            'can' => 'ver clientes',
         ],
         [
             'text' => 'Gestionar Proveedores',
             'route'  => 'proveedores.index',
             'icon' => 'fas fa-fw fa-boxes',
+            'can' => 'ver proveedores',
         ],
         [
             'text' => 'Gestionar Categorias',
             'route'  => 'categorias.index',
             'icon' => 'fas fa-fw fa-th',
+            'can' => 'ver categorias',
         ],
         [
             'text' => 'Gestionar Productos',
             'route'  => 'productos.index',
             'icon' => 'fas fa-truck-loading',
+            'can' => 'ver productos',
         ],
         [
             'text' => 'Gestionar Compras',
             'route' => 'compras.index',
             'icon' => 'fas fa-fw fa-shopping-cart',
+            'can' => 'ver compras',
         ],
         [
             'text' => 'Gestionar Pedidos',
             'route' => 'pedidos.index',
             'icon' => 'fas fa-fw fa-clipboard-list',
+            'can' => 'ver pedidos',
+        ],
+        [
+            'text' => 'Administración',
+            'icon' => 'fas fa-fw fa-cog',
+            'can' => ['ver usuarios', 'ver reportes'],
+            'submenu' => [
+                [
+                    'text' => 'Roles y Permisos',
+                    'url' => 'admin/roles',
+                    'icon' => 'fas fa-fw fa-user-shield',
+                    'can' => 'ver usuarios',
+                ],
+                [
+                    'text' => 'Reportes',
+                    'url' => 'reportes',
+                    'icon' => 'fas fa-fw fa-chart-bar',
+                    'can' => 'ver reportes',
+                ],
+            ],
         ],
     ],
 

@@ -19,8 +19,8 @@ class Proveedor extends Model
         'estado',
     ];
 
-    public function trabajadores()
+    public function compras()
     {
-        return $this->hasMany(TrabajadorProveedor::class);
+        return $this->hasMany(Compra::class);
     }
 }
