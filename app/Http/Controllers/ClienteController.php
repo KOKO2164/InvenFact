@@ -41,6 +41,7 @@ class ClienteController extends Controller
             'email' => 'required|string|max:255',
             'direccion' => 'required|string|regex:/^(?=.*[\p{L}].*[\p{L}])[\p{L}\p{N}\-#°,\'\. ]+$/u',
             'telefono' => 'required|string|regex:/^[0-9\-\+ ]+$/|min:9|max:15',
+            'dni' => 'nullable|string|regex:/^[0-9]{8}$/|unique:clientes,dni'            
         ]);
 
         try {
@@ -66,6 +67,7 @@ class ClienteController extends Controller
             'email' => 'required|string|max:255',
             'direccion' => 'required|string|regex:/^(?=.*[\p{L}].*[\p{L}])[\p{L}\p{N}\-#°,\'\. ]+$/u',
             'telefono' => 'required|string|regex:/^[0-9\-\+ ]+$/|min:9|max:15',
+            'dni' => 'nullable|string|regex:/^[0-9]{8}$/|unique:clientes,dni,' . $id
         ]);
 
         try {

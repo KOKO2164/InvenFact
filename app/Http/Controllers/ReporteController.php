@@ -18,6 +18,7 @@ use App\Models\Proveedor;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ReporteController extends Controller
 {
@@ -121,7 +122,7 @@ class ReporteController extends Controller
         }
         
         if ($request->has('stock_min')) {
-            $query->where('stock', '<=', $request->input('stock_min'));
+            $query->where('stock', '>=', $request->input('stock_min'));
         }
         
         $productos = $query->orderBy('nombre')->paginate(15);
@@ -153,18 +154,22 @@ class ReporteController extends Controller
     {
         $query = Pedido::with(['cliente', 'trabajador']);
         
-        if ($request->has('fecha_desde')) {
+        if ($request->has('fecha_desde') && $request->fecha_desde !== null) {
             $query->whereDate('fecha', '>=', $request->input('fecha_desde'));
         }
-        
-        if ($request->has('fecha_hasta')) {
+
+        if ($request->has('fecha_hasta') && $request->fecha_hasta !== null) {
             $query->whereDate('fecha', '<=', $request->input('fecha_hasta'));
         }
         
-        if ($request->has('estado_id')) {
+        if ($request->has('estado_id') && $request->estado_id !== null) {
             $query->where('estado_id', $request->input('estado_id'));
         }
-        
+
+        if ($request->has('cliente_id') && $request->cliente_id !== null) {
+            $query->where('cliente_id', $request->input('cliente_id'));
+        }
+
         $pedidos = $query->orderBy('fecha', 'desc')->paginate(15);
         $estados = DB::table('estados')->get();
         $clientes = Cliente::whereHas('pedidos')->get();
@@ -203,16 +208,20 @@ class ReporteController extends Controller
     {
         $query = Compra::with(['proveedor', 'trabajador']);
         
-        if ($request->has('fecha_desde')) {
-            $query->where('fecha', '>=', $request->input('fecha_desde'));
+        if ($request->has('fecha_desde') && $request->fecha_desde !== null) {
+            $query->whereDate('fecha', '>=', $request->input('fecha_desde'));
         }
         
-        if ($request->has('fecha_hasta')) {
-            $query->where('fecha', '<=', $request->input('fecha_hasta'));
+        if ($request->has('fecha_hasta') && $request->fecha_hasta !== null) {
+            $query->whereDate('fecha', '<=', $request->input('fecha_hasta'));
         }
         
-        if ($request->has('estado_id')) {
+        if ($request->has('estado_id') && $request->estado_id !== null) {
             $query->where('estado_id', $request->input('estado_id'));
+        }
+
+        if ($request->has('proveedor_id') && $request->proveedor_id !== null) {
+            $query->where('proveedor_id', $request->input('proveedor_id'));
         }
         
         $compras = $query->orderBy('fecha', 'desc')->paginate(15);

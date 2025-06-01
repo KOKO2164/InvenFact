@@ -43,7 +43,8 @@ class UserController extends Controller
             'name' => 'required|string|regex:/^(?=.*[\p{L}].*[\p{L}])[\p{L}0-9&\-\'\., ]+$/u',
             'fecha_nacimiento' => 'required|date',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:8'
+            'password' => 'required|min:8',
+            'rol' => 'required|in:' . implode(',', Role::pluck('name')->toArray()),
         ]);
 
         try {
@@ -53,8 +54,8 @@ class UserController extends Controller
             $user = User::create($data);
             
             // Asignar roles
-            if ($request->has('roles')) {
-                $user->syncRoles($request->roles);
+            if ($request->has('rol')) {
+                $user->syncRoles($request->rol);
             }
 
             return redirect()->route('users.index')->with('success', 'Usuario creado correctamente');
@@ -77,7 +78,8 @@ class UserController extends Controller
             'dni' => 'required|numeric|digits:8|unique:users,dni,' . $id,
             'name' => 'required|string|regex:/^(?=.*[\p{L}].*[\p{L}])[\p{L}0-9&\-\'\., ]+$/u',
             'fecha_nacimiento' => 'required|date',
-            'email' => 'required|email|unique:users,email,' . $id
+            'email' => 'required|email|unique:users,email,' . $id,
+            'rol' => 'required|in:' . implode(',', Role::pluck('name')->toArray()),
         ]);
 
         try {
@@ -85,8 +87,8 @@ class UserController extends Controller
             $user->update($request->all());
             
             // Asignar roles
-            if ($request->has('roles')) {
-                $user->syncRoles($request->roles);
+            if ($request->has('rol')) {
+                $user->syncRoles($request->rol);
             }
 
             return redirect()->route('users.index')->with('success', 'Usuario modificado correctamente');

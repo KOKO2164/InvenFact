@@ -29,6 +29,18 @@
                     @enderror
                 </div>
                 <div class="form-group">
+                    <label for="dni">DNI</label>
+                    <input type="text" name="dni" id="dni"
+                        class="form-control @error('dni') is-invalid @enderror"
+                        placeholder="Ingrese el DNI del Cliente" value="{{ old('dni') }}"
+                        minlength="8" maxlength="8" pattern="[0-9]{8}">
+                    @error('dni')
+                        <div class="invalid-feedback">
+                            <strong>{{ $message }}</strong>
+                        </div>
+                    @enderror
+                </div>
+                <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" name="email" id="email"
                         class="form-control @error('email') is-invalid @enderror"

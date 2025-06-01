@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('telefono', 20)->nullable();
             $table->string('direccion', 255)->nullable();
             $table->boolean('estado')->default(true);
+            $table->string('dni', 8)->unique()->nullable(); // DNI único y opcional
             $table->timestamps();
         });
     }

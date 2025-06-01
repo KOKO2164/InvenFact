@@ -75,14 +75,14 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="roles">Rol</label>
-                    <select name="roles[]" id="roles" class="form-control @error('roles') is-invalid @enderror">
+                    <label for="rol">Rol</label>
+                    <select name="rol" id="rol" class="form-control @error('rol') is-invalid @enderror">
                         <option value="">Seleccione un rol</option>
                         @foreach($roles as $role)
-                            <option value="{{ $role->name }}" {{ old('roles') == $role->name ? 'selected' : '' }}>{{ $role->name }}</option>
+                            <option value="{{ $role->name }}" {{ old('rol') == $role->name ? 'selected' : '' }}>{{ $role->name }}</option>
                         @endforeach
                     </select>
-                    @error('roles')
+                    @error('rol')
                         <div class="invalid-feedback">
                             <strong>{{ $message }}</strong>
                         </div>

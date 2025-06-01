@@ -17,6 +17,7 @@ class Cliente extends Model
         'telefono',
         'direccion',
         'estado',
+        'dni', // DNI único y opcional
     ];
 
     public function pedidos()

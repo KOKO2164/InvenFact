@@ -8,8 +8,9 @@
         module="Cliente" />
 @stop
 @section('table')
-    <x-data-table :info="$items" :titles="['Nombre', 'Correo', 'Teléfono', 'Dirección', 'Estado', 'Acciones']" :columns="[
+    <x-data-table :info="$items" :titles="['Nombre', 'DNI', 'Correo', 'Teléfono', 'Dirección', 'Estado', 'Acciones']" :columns="[
         ['key' => 'nombre'],
+        ['key' => 'dni'],
         ['key' => 'email'],
         ['key' => 'telefono'],
         ['key' => 'direccion'],

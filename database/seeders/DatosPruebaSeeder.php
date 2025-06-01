@@ -66,11 +66,11 @@ class DatosPruebaSeeder extends Seeder
     private function truncateTablas(array $tablas)
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        
+
         foreach ($tablas as $tabla) {
             DB::table($tabla)->truncate();
         }
-        
+
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 
@@ -134,11 +134,11 @@ class DatosPruebaSeeder extends Seeder
         if ($adminRole) {
             $adminUser->assignRole($adminRole);
         }
-        
+
         if ($vendedorRole) {
             $vendedorUser->assignRole($vendedorRole);
         }
-        
+
         if ($almaceneroRole) {
             $almaceneroUser->assignRole($almaceneroRole);
         }
@@ -152,39 +152,44 @@ class DatosPruebaSeeder extends Seeder
         // Crear clientes de ejemplo para metalmecánica
         $clientes = [
             [
-                'nombre' => 'Construcciones Metálicas San Juan',
-                'email' => 'ventas@sanjuanmetalicas.com',
-                'direccion' => 'Av. Industrial 1250, Ate',
-                'telefono' => '923456789',
-                'estado' => true
-            ],
-            [
-                'nombre' => 'Minera Antamina',
-                'email' => 'compras@antamina.com',
-                'direccion' => 'Av. El Derby 055, Santiago de Surco',
+                'nombre' => 'Juan Pérez García',
+                'email' => 'juan.perez@gmail.com',
+                'direccion' => 'Jr. Los Olivos 123, Lima',
                 'telefono' => '987654321',
-                'estado' => true
+                'estado' => true,
+                'dni' => '12345678'
             ],
             [
-                'nombre' => 'Aceros Arequipa',
-                'email' => 'contacto@acerosarequipa.com',
-                'direccion' => 'Av. Enrique Meiggs 297, Callao',
-                'telefono' => '926356565',
-                'estado' => true
+                'nombre' => 'María López Torres',
+                'email' => 'maria.lopez@hotmail.com',
+                'direccion' => 'Av. Primavera 456, Surco',
+                'telefono' => '912345678',
+                'estado' => true,
+                'dni' => '23456789'
             ],
             [
-                'nombre' => 'Fabricaciones Industriales del Sur',
-                'email' => 'ventas@fabinsur.com',
-                'direccion' => 'Av. Los Incas 234, Arequipa',
-                'telefono' => '955667788',
-                'estado' => true
+                'nombre' => 'Carlos Ramírez Soto',
+                'email' => 'carlos.ramirez@yahoo.com',
+                'direccion' => 'Calle Las Flores 789, Miraflores',
+                'telefono' => '956789012',
+                'estado' => true,
+                'dni' => '34567890'
             ],
             [
-                'nombre' => 'Estructuras Metálicas del Perú',
-                'email' => 'ventas@estructuras.com.pe',
-                'direccion' => 'Av. Argentina 2010, Lima',
-                'telefono' => '944556677',
-                'estado' => true
+                'nombre' => 'Ana Torres Quispe',
+                'email' => 'ana.torres@gmail.com',
+                'direccion' => 'Av. La Marina 321, Callao',
+                'telefono' => '965432187',
+                'estado' => true,
+                'dni' => '45678901'
+            ],
+            [
+                'nombre' => 'Luis Fernández Rojas',
+                'email' => 'luis.fernandez@outlook.com',
+                'direccion' => 'Jr. San Martín 654, Arequipa',
+                'telefono' => '974563218',
+                'estado' => true,
+                'dni' => '56789012'
             ]
         ];
 
@@ -324,7 +329,7 @@ class DatosPruebaSeeder extends Seeder
                         ]
                     ];
                     break;
-                    
+
                 case 'Perfiles Metálicos':
                     $productos = [
                         [
@@ -350,7 +355,7 @@ class DatosPruebaSeeder extends Seeder
                         ]
                     ];
                     break;
-                    
+
                 case 'Herramientas':
                     $productos = [
                         [
@@ -402,7 +407,7 @@ class DatosPruebaSeeder extends Seeder
                         ]
                     ];
                     break;
-                    
+
                 case 'Seguridad Industrial':
                     $productos = [
                         [
@@ -428,7 +433,7 @@ class DatosPruebaSeeder extends Seeder
                         ]
                     ];
                     break;
-                    
+
                 case 'Acabados':
                     $productos = [
                         [
@@ -454,7 +459,7 @@ class DatosPruebaSeeder extends Seeder
                         ]
                     ];
                     break;
-                    
+
                 default:
                     $productos = [];
             }
@@ -473,11 +478,11 @@ class DatosPruebaSeeder extends Seeder
     {
         // Obtener proveedores
         $proveedores = Proveedor::all();
-        
+
         // Obtener usuario almacenero
         $almacenero = User::where('email', 'almacenero@invenfact.com')->first();
         $userId = $almacenero ? $almacenero->id : User::first()->id;
-        
+
         // Crear compras de ejemplo
         for ($i = 1; $i <= 5; $i++) {
             $compra = Compra::create([
@@ -489,22 +494,24 @@ class DatosPruebaSeeder extends Seeder
                 'fecha' => now()->subDays(rand(1, 60)),
                 'total' => 0
             ]);
-            
+
             // Agregar detalles de compra
             $this->agregarDetalleCompra($compra);
-            
+
             // Actualizar total
-            $compra->update(['total' => $compra->detalleCompras->sum(function($detalle) {
-                return $detalle->cantidad * $detalle->precio;
-            })]);
+            $compra->update([
+                'total' => $compra->detalleCompras->sum(function ($detalle) {
+                    return $detalle->cantidad * $detalle->precio;
+                })
+            ]);
         }
     }
-    
+
     private function agregarDetalleCompra($compra)
     {
         // Obtener productos aleatorios
         $productos = Producto::inRandomOrder()->take(rand(2, 5))->get();
-        
+
         foreach ($productos as $producto) {
             DetalleCompra::create([
                 'compra_id' => $compra->id,
@@ -514,16 +521,16 @@ class DatosPruebaSeeder extends Seeder
             ]);
         }
     }
-    
+
     private function crearPedidos()
     {
         // Obtener clientes
         $clientes = Cliente::all();
-        
+
         // Obtener usuario vendedor
         $vendedor = User::where('email', 'vendedor@invenfact.com')->first();
         $userId = $vendedor ? $vendedor->id : User::first()->id;
-        
+
         // Crear pedidos de ejemplo
         for ($i = 1; $i <= 8; $i++) {
             $pedido = Pedido::create([
@@ -535,22 +542,24 @@ class DatosPruebaSeeder extends Seeder
                 'fecha' => now()->subDays(rand(1, 30)),
                 'total' => 0
             ]);
-            
+
             // Agregar detalles de pedido
             $this->agregarDetallePedido($pedido);
-            
+
             // Actualizar total
-            $pedido->update(['total' => $pedido->detallePedidos->sum(function($detalle) {
-                return $detalle->cantidad * $detalle->precio;
-            })]);
+            $pedido->update([
+                'total' => $pedido->detallePedidos->sum(function ($detalle) {
+                    return $detalle->cantidad * $detalle->precio;
+                })
+            ]);
         }
     }
-    
+
     private function agregarDetallePedido($pedido)
     {
         // Obtener productos aleatorios
         $productos = Producto::inRandomOrder()->take(rand(2, 5))->get();
-        
+
         foreach ($productos as $producto) {
             DetallePedido::create([
                 'pedido_id' => $pedido->id,

@@ -39,7 +39,7 @@ class ProductoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombre' => 'required|string|regex:/^(?=.*[\p{L}].*[\p{L}])[\p{L}0-9&\-\., ]+$/u|unique:productos,nombre',
+            'nombre' => 'required|string|unique:productos,nombre',
             'descripcion' => 'required|string',
             'precio' => 'required|numeric|min:1',
             'stock' => 'required|numeric|min:1',
@@ -67,7 +67,7 @@ class ProductoController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nombre' => 'required|string|regex:/^(?=.*[\p{L}].*[\p{L}])[\p{L}0-9&\-\., ]+$/u|unique:productos,nombre,' . $id,
+            'nombre' => 'required|string|unique:productos,nombre,' . $id,
             'descripcion' => 'required|string',
             'precio' => 'required|numeric|min:1',
             'stock' => 'required|numeric|min:1',
