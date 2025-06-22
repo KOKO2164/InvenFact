@@ -15,6 +15,9 @@
                 <a href="{{ route('reportes.exportar-proveedores') }}" class="btn btn-success">
                     <i class="fas fa-download"></i> Exportar a Excel
                 </a>
+                <a href="{{ route('reportes.pdf-proveedores') }}" class="btn btn-danger" target="_blank">
+                    <i class="fas fa-file-pdf"></i> Generar PDF
+                </a>
             </div>
         </div>
         <div class="p-0 card-body table-responsive">
@@ -94,12 +97,12 @@ document.addEventListener('DOMContentLoaded', function () {
     // Obtener datos para los gráficos
     const proveedores = @json($proveedores);
     const comprasMensuales = @json($comprasMensuales ?? []);
-    
+
     // Preparar datos para el gráfico de Top 10 proveedores
     const proveedoresOrdenados = [...proveedores.data].sort((a, b) => b.compras_sum_total - a.compras_sum_total).slice(0, 10);
     const nombresProveedores = proveedoresOrdenados.map(proveedor => proveedor.nombre);
     const montosProveedores = proveedoresOrdenados.map(proveedor => proveedor.compras_sum_total);
-    
+
     // Gráfico de Top 10 proveedores
     const ctxTopProveedores = document.getElementById('topProveedoresChart').getContext('2d');
     new Chart(ctxTopProveedores, {
@@ -134,12 +137,12 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     });
-    
+
     // Gráfico de compras mensuales por proveedor
     if (comprasMensuales.length > 0) {
         const meses = comprasMensuales.map(item => item.mes);
         const topProveedores = proveedoresOrdenados.slice(0, 5); // Mostrar solo los 5 mejores
-        
+
         const datasets = topProveedores.map((proveedor, index) => {
             // Asignar diferentes colores a cada proveedor
             const colores = [
@@ -149,11 +152,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 'rgba(75, 192, 192, 0.5)',
                 'rgba(153, 102, 255, 0.5)'
             ];
-            
+
             const datosProveedor = comprasMensuales
                 .filter(item => item.proveedor_id === proveedor.id)
                 .map(item => item.total);
-                
+
             return {
                 label: proveedor.nombre,
                 data: datosProveedor,
@@ -162,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 borderWidth: 1
             };
         });
-        
+
         const ctxComprasMensuales = document.getElementById('comprasMensualesChart').getContext('2d');
         new Chart(ctxComprasMensuales, {
             type: 'line',

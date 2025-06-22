@@ -92,11 +92,18 @@ Route::middleware(['auth'])->prefix('reportes')->name('reportes.')->group(functi
     Route::get('/proveedores', [ReporteController::class, 'proveedores'])->name('proveedores');
     Route::get('/pedidos', [ReporteController::class, 'pedidos'])->name('pedidos');
     Route::get('/compras', [ReporteController::class, 'compras'])->name('compras');
-    
+
     // Rutas de exportación
     Route::get('/exportar-productos', [ReporteController::class, 'exportProductos'])->name('exportar-productos');
     Route::get('/exportar-clientes', [ReporteController::class, 'exportClientes'])->name('exportar-clientes');
     Route::get('/exportar-proveedores', [ReporteController::class, 'exportProveedores'])->name('exportar-proveedores');
     Route::get('/exportar-pedidos', [ReporteController::class, 'exportPedidos'])->name('exportar-pedidos');
     Route::get('/exportar-compras', [ReporteController::class, 'exportCompras'])->name('exportar-compras');
+
+    // Rutas de exportación PDF
+    Route::get('/pdf-productos', [ReporteController::class, 'productosPdf'])->name('pdf-productos');
+    Route::get('/pdf-clientes', [ReporteController::class, 'clientesPdf'])->name('pdf-clientes');
+    Route::get('/pdf-proveedores', [ReporteController::class, 'proveedoresPdf'])->name('pdf-proveedores');
+    Route::get('/pdf-pedidos', [ReporteController::class, 'pedidosPdf'])->name('pdf-pedidos');
+    Route::get('/pdf-compras', [ReporteController::class, 'comprasPdf'])->name('pdf-compras');
 });

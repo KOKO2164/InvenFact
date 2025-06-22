@@ -59,6 +59,9 @@
                     <button type="submit" class="btn btn-success">
                         <i class="fas fa-download"></i> Exportar a Excel
                     </button>
+                    <a href="{{ route('reportes.pdf-productos', request()->all()) }}" class="btn btn-danger" target="_blank">
+                        <i class="fas fa-file-pdf"></i> Generar PDF
+                    </a>
                 </form>
             </div>
         </div>
@@ -139,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Agrupar productos por categoría para gráficos
     const productos = @json($productos);
     const categorias = @json($categorias);
-    
+
     // Preparar datos para los gráficos
     const categoriasNombres = [];
     const valorPorCategoria = [];
@@ -152,26 +155,26 @@ document.addEventListener('DOMContentLoaded', function () {
         'rgba(153, 102, 255, 0.8)',
         'rgba(255, 159, 64, 0.8)'
     ];
-    
+
     // Procesar categorías
     categorias.forEach(function(categoria, index) {
         categoriasNombres.push(categoria.nombre);
-        
+
         // Calcular valores para esta categoría
         let valor = 0;
         let cantidad = 0;
-        
+
         productos.data.forEach(function(producto) {
             if (producto.categoria_id === categoria.id) {
                 valor += producto.precio * producto.stock;
                 cantidad++;
             }
         });
-        
+
         valorPorCategoria.push(valor);
         cantidadPorCategoria.push(cantidad);
     });
-    
+
     // Gráfico de valor de inventario por categoría
     const ctxValor = document.getElementById('inventarioValorChart').getContext('2d');
     new Chart(ctxValor, {
@@ -200,7 +203,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     });
-    
+
     // Gráfico de cantidad de productos por categoría
     const ctxCantidad = document.getElementById('inventarioCantidadChart').getContext('2d');
     new Chart(ctxCantidad, {

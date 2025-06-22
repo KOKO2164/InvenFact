@@ -15,10 +15,10 @@ use App\Models\DetallePedido;
 use App\Models\Pedido;
 use App\Models\Producto;
 use App\Models\Proveedor;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class ReporteController extends Controller
 {
@@ -36,7 +36,7 @@ class ReporteController extends Controller
         $totalProveedores = Proveedor::count();
         $totalPedidos = Pedido::count();
         $totalCompras = Compra::count();
-        
+
         // Obtener top productos más vendidos
         $topProductos = DetallePedido::select('producto_id', DB::raw('SUM(cantidad) as total_vendido'))
             ->with('producto')
@@ -44,7 +44,7 @@ class ReporteController extends Controller
             ->orderByDesc('total_vendido')
             ->take(5)
             ->get();
-            
+
         // Obtener top clientes por monto de compra
         $topClientes = Pedido::select('cliente_id', DB::raw('SUM(total) as total_compras'))
             ->with('cliente')
@@ -52,7 +52,7 @@ class ReporteController extends Controller
             ->orderByDesc('total_compras')
             ->take(5)
             ->get();
-            
+
         // Obtener compras por mes para gráfico
         $comprasPorMes = Compra::select(DB::raw('MONTH(fecha) as mes'), DB::raw('SUM(total) as total'))
             ->whereYear('fecha', date('Y'))
@@ -67,7 +67,7 @@ class ReporteController extends Controller
                     'total' => $item->total
                 ];
             });
-            
+
         // Obtener pedidos por mes para gráfico
         $pedidosPorMes = Pedido::select(DB::raw('MONTH(fecha) as mes'), DB::raw('SUM(total) as total'))
             ->whereYear('fecha', date('Y'))
@@ -82,7 +82,7 @@ class ReporteController extends Controller
                     'total' => $item->total
                 ];
             });
-            
+
         // Datos de inventario por categoría
         $inventarioPorCategoria = Categoria::with('productos')
             ->get()
@@ -95,65 +95,65 @@ class ReporteController extends Controller
                     })
                 ];
             });
-        
+
         return view('reportes.index', compact(
-            'totalProductos', 
-            'totalClientes', 
-            'totalProveedores', 
-            'totalPedidos', 
-            'totalCompras', 
-            'topProductos', 
-            'topClientes', 
-            'comprasPorMes', 
-            'pedidosPorMes', 
+            'totalProductos',
+            'totalClientes',
+            'totalProveedores',
+            'totalPedidos',
+            'totalCompras',
+            'topProductos',
+            'topClientes',
+            'comprasPorMes',
+            'pedidosPorMes',
             'inventarioPorCategoria'
         ));
     }
-    
+
     public function productos(Request $request)
     {
         $categorias = Categoria::all();
         $categoria_id = $request->input('categoria_id');
-        
+
         $query = Producto::with('categoria');
-        
+
         if ($categoria_id) {
             $query->where('categoria_id', $categoria_id);
         }
-        
-        if ($request->has('stock_min')) {
+
+        if ($request->has('stock_min') && $request->stock_min != '') {
             $query->where('stock', '>=', $request->input('stock_min'));
         }
-        
+
         $productos = $query->orderBy('nombre')->paginate(15);
-        
+
         return view('reportes.productos', compact('productos', 'categorias'));
     }
-    
+
     public function clientes()
     {
         $clientes = Cliente::withCount(['pedidos'])
             ->withSum('pedidos', 'total')
             ->orderBy('nombre')
             ->paginate(15);
-            
+
         return view('reportes.clientes', compact('clientes'));
     }
-    
+
     public function proveedores()
     {
         $proveedores = Proveedor::withCount(['compras'])
             ->withSum('compras', 'total')
             ->orderBy('nombre')
             ->paginate(15);
-            
+
         return view('reportes.proveedores', compact('proveedores'));
     }
-    
+
     public function pedidos(Request $request)
     {
         $query = Pedido::with(['cliente', 'trabajador']);
-        
+
         if ($request->has('fecha_desde') && $request->fecha_desde !== null) {
             $query->whereDate('fecha', '>=', $request->input('fecha_desde'));
         }
@@ -161,7 +161,7 @@ class ReporteController extends Controller
         if ($request->has('fecha_hasta') && $request->fecha_hasta !== null) {
             $query->whereDate('fecha', '<=', $request->input('fecha_hasta'));
         }
-        
+
         if ($request->has('estado_id') && $request->estado_id !== null) {
             $query->where('estado_id', $request->input('estado_id'));
         }
@@ -173,7 +173,7 @@ class ReporteController extends Controller
         $pedidos = $query->orderBy('fecha', 'desc')->paginate(15);
         $estados = DB::table('estados')->get();
         $clientes = Cliente::whereHas('pedidos')->get();
-        
+
         // Preparar datos para gráficos
         /* $estadisticas = [
             'estados' => Pedido::select('estado_id', DB::raw('COUNT(*) as total'))
@@ -200,22 +200,22 @@ class ReporteController extends Controller
                     ];
                 })
         ]; */
-        
+
         return view('reportes.pedidos', compact('pedidos', 'estados', 'clientes'/* , 'estadisticas' */));
     }
-    
+
     public function compras(Request $request)
     {
         $query = Compra::with(['proveedor', 'trabajador']);
-        
+
         if ($request->has('fecha_desde') && $request->fecha_desde !== null) {
             $query->whereDate('fecha', '>=', $request->input('fecha_desde'));
         }
-        
+
         if ($request->has('fecha_hasta') && $request->fecha_hasta !== null) {
             $query->whereDate('fecha', '<=', $request->input('fecha_hasta'));
         }
-        
+
         if ($request->has('estado_id') && $request->estado_id !== null) {
             $query->where('estado_id', $request->input('estado_id'));
         }
@@ -223,11 +223,11 @@ class ReporteController extends Controller
         if ($request->has('proveedor_id') && $request->proveedor_id !== null) {
             $query->where('proveedor_id', $request->input('proveedor_id'));
         }
-        
+
         $compras = $query->orderBy('fecha', 'desc')->paginate(15);
         $estados = DB::table('estados')->get();
         $proveedores = Proveedor::whereHas('compras')->get();
-        
+
         // Preparar datos para gráficos
         /* $estadisticas = [
             'Compras por Proveedor' => Compra::select('proveedor_id', DB::raw('COUNT(*) as total'))
@@ -253,43 +253,107 @@ class ReporteController extends Controller
                     ];
                 })
         ]; */
-        
+
         return view('reportes.compras', compact('compras', 'estados', 'proveedores'/* , 'estadisticas' */));
     }
-    
+
     public function exportProductos(Request $request)
     {
         $categoria_id = $request->input('categoria_id');
         $stock_min = $request->input('stock_min');
-        
+
         return Excel::download(new ProductosExport($categoria_id, $stock_min), 'productos.xlsx');
     }
-    
+
     public function exportClientes()
     {
         return Excel::download(new ClientesExport, 'clientes.xlsx');
     }
-    
+
     public function exportProveedores()
     {
         return Excel::download(new ProveedoresExport, 'proveedores.xlsx');
     }
-    
+
     public function exportPedidos(Request $request)
     {
         $fecha_desde = $request->input('fecha_desde');
         $fecha_hasta = $request->input('fecha_hasta');
         $estado_id = $request->input('estado_id');
-        
+
         return Excel::download(new PedidosExport($fecha_desde, $fecha_hasta, $estado_id), 'pedidos.xlsx');
     }
-    
+
     public function exportCompras(Request $request)
     {
         $fecha_desde = $request->input('fecha_desde');
         $fecha_hasta = $request->input('fecha_hasta');
         $estado_id = $request->input('estado_id');
-        
+
         return Excel::download(new ComprasExport($fecha_desde, $fecha_hasta, $estado_id), 'compras.xlsx');
+    }
+
+    public function productosPdf(Request $request)
+    {
+        $categorias = Categoria::all();
+        $categoria_id = $request->input('categoria_id');
+        $query = Producto::with('categoria');
+        if ($categoria_id) {
+            $query->where('categoria_id', $categoria_id);
+        }
+        if ($request->has('stock_min') && $request->stock_min != '') {
+            $query->where('stock', '>=', $request->input('stock_min'));
+        }
+        $productos = $query->orderBy('nombre')->get();
+        $pdf = Pdf::loadView('reportes.pdf.productos', compact('productos', 'categorias'));
+        return $pdf->download('reporte_productos.pdf');
+    }
+
+    public function clientesPdf()
+    {
+        $clientes = Cliente::withCount(['pedidos'])
+            ->withSum('pedidos', 'total')
+            ->orderBy('nombre')
+            ->get();
+        $pdf = Pdf::loadView('reportes.pdf.clientes', compact('clientes'));
+        return $pdf->download('reporte_clientes.pdf');
+    }
+
+    public function proveedoresPdf()
+    {
+        $proveedores = Proveedor::withCount(['compras'])
+            ->withSum('compras', 'total')
+            ->orderBy('nombre')
+            ->get();
+        $pdf = Pdf::loadView('reportes.pdf.proveedores', compact('proveedores'));
+        return $pdf->download('reporte_proveedores.pdf');
+    }
+
+    public function pedidosPdf(Request $request)
+    {
+        $query = Pedido::with(['cliente', 'trabajador']);
+        if ($request->has('fecha_desde') && $request->fecha_desde !== null) {
+            $query->whereDate('fecha', '>=', $request->input('fecha_desde'));
+        }
+        if ($request->has('fecha_hasta') && $request->fecha_hasta !== null) {
+            $query->whereDate('fecha', '<=', $request->input('fecha_hasta'));
+        }
+        $pedidos = $query->orderBy('fecha', 'desc')->get();
+        $pdf = Pdf::loadView('reportes.pdf.pedidos', compact('pedidos'));
+        return $pdf->download('reporte_pedidos.pdf');
+    }
+
+    public function comprasPdf(Request $request)
+    {
+        $query = Compra::with(['proveedor', 'trabajador']);
+        if ($request->has('fecha_desde') && $request->fecha_desde !== null) {
+            $query->whereDate('fecha', '>=', $request->input('fecha_desde'));
+        }
+        if ($request->has('fecha_hasta') && $request->fecha_hasta !== null) {
+            $query->whereDate('fecha', '<=', $request->input('fecha_hasta'));
+        }
+        $compras = $query->orderBy('fecha', 'desc')->get();
+        $pdf = Pdf::loadView('reportes.pdf.compras', compact('compras'));
+        return $pdf->download('reporte_compras.pdf');
     }
 }

@@ -54,6 +54,9 @@
                     <a href="{{ route('reportes.exportar-compras', request()->all()) }}" class="btn btn-success">
                         <i class="fas fa-download"></i> Exportar a Excel
                     </a>
+                    <a href="{{ route('reportes.pdf-compras', request()->all()) }}" class="btn btn-danger" target="_blank">
+                        <i class="fas fa-file-pdf"></i> Generar PDF
+                    </a>
                 </div>
             </form>
         </div>
@@ -134,10 +137,10 @@
 {{-- <script>
 document.addEventListener('DOMContentLoaded', function () {
     $('.select2').select2();
-    
+
     // Datos para el gráfico de pedidos por estado
     const estadisticas = @json($estadisticas);
-    
+
     // Gráfico de pedidos por estado
     const ctxEstados = document.getElementById('pedidosEstadoChart').getContext('2d');
     new Chart(ctxEstados, {
@@ -169,12 +172,12 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     });
-    
+
     // Datos para el gráfico de ventas mensuales
     const ventasPorMes = estadisticas.ventas_mensuales || [];
     const meses = ventasPorMes.map(v => v.mes);
     const montos = ventasPorMes.map(v => v.total);
-    
+
     // Gráfico de ventas mensuales
     const ctxVentas = document.getElementById('ventasMensualesChart').getContext('2d');
     new Chart(ctxVentas, {

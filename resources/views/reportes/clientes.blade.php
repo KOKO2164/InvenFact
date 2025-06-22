@@ -15,6 +15,9 @@
                 <a href="{{ route('reportes.exportar-clientes') }}" class="btn btn-success">
                     <i class="fas fa-download"></i> Exportar a Excel
                 </a>
+                <a href="{{ route('reportes.pdf-clientes') }}" class="btn btn-danger" target="_blank">
+                    <i class="fas fa-file-pdf"></i> Generar PDF
+                </a>
             </div>
         </div>
         <div class="p-0 card-body table-responsive">
@@ -93,12 +96,12 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Obtener datos para los gráficos
     const clientes = @json($clientes);
-    
+
     // Preparar datos para el gráfico de Top 10 clientes
     const clientesOrdenados = [...clientes.data].sort((a, b) => b.pedidos_sum_total - a.pedidos_sum_total).slice(0, 10);
     const nombresClientes = clientesOrdenados.map(cliente => cliente.nombre);
     const montosClientes = clientesOrdenados.map(cliente => cliente.pedidos_sum_total);
-    
+
     // Gráfico de Top 10 clientes
     const ctxTopClientes = document.getElementById('topClientesChart').getContext('2d');
     new Chart(ctxTopClientes, {
@@ -133,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     });
-    
+
     // Datos para gráfico de distribución de pedidos
     const totalClientes = clientes.data.length;
     const clientesSinPedidos = clientes.data.filter(cliente => cliente.pedidos_count === 0).length;
@@ -141,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const clientesCon6a10 = clientes.data.filter(cliente => cliente.pedidos_count > 5 && cliente.pedidos_count <= 10).length;
     const clientesCon11a20 = clientes.data.filter(cliente => cliente.pedidos_count > 10 && cliente.pedidos_count <= 20).length;
     const clientesConMas20 = clientes.data.filter(cliente => cliente.pedidos_count > 20).length;
-    
+
     // Gráfico de distribución de pedidos
     const ctxDistribucion = document.getElementById('distribucionPedidosChart').getContext('2d');
     new Chart(ctxDistribucion, {
