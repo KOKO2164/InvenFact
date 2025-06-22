@@ -58,6 +58,11 @@
                             <i class="fas fa-pencil-alt"></i>
                         </a>
                     @endif
+                    @if (isset($routes['pdf']))
+                        <a href="{{ route($routes['pdf'], $item->id) }}" class="btn btn-danger ml-1" target="_blank" title="Descargar PDF">
+                            <i class="fas fa-file-pdf"></i>
+                        </a>
+                    @endif
                     @if (isset($routes['disable']) && isset($routes['enable']))
                         @if ($item->estado)
                             @if ($item->id === auth()->user()->id && $item instanceof App\Models\User)

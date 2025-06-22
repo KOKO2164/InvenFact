@@ -59,6 +59,7 @@ Route::post('/compras/{compra}/detalle', [DetalleCompraController::class, 'store
 Route::patch('/compras/{compra}/detalle', [DetalleCompraController::class, 'update'])->name('detalles-compras.update');
 Route::delete('/compras/{compra}/detalle', [DetalleCompraController::class, 'destroy'])->name('detalles-compras.destroy');
 Route::patch('/compras/{compra}/update-estado', [CompraController::class, 'updateEstado'])->name('compras.update-estado')->middleware('auth');
+Route::get('/compras/{item}/pdf', [CompraController::class, 'pdf'])->name('compras.pdf')->middleware('auth');
 
 Route::resource('/clientes', ClienteController::class)->except('show', 'destroy')->parameters(['clientes' => 'cliente'])->middleware('auth');
 Route::patch('/clientes/{cliente}/deshabilitar', [ClienteController::class, 'disable'])->name('clientes.disable')->middleware('auth');

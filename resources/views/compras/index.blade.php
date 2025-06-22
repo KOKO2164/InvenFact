@@ -19,5 +19,6 @@
     ]" :routes="[
         'edit' => 'compras.edit',
         'update-estado' => 'compras.update-estado',
+        'pdf' => 'compras.pdf',
     ]" :otherModels="$otherModels" />
 @stop

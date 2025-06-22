@@ -6,9 +6,9 @@ use App\Models\Compra;
 use App\Models\Estado;
 use App\Models\Producto;
 use App\Models\Proveedor;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-
 class CompraController extends Controller
 {
     public function __construct()
@@ -26,18 +26,18 @@ class CompraController extends Controller
             $searchValue = $request->input('codigo');
             $query->where('codigo', 'like', "%$searchValue%");
         }
-        
+
         $items = $query->paginate(10);
-        
+
         // Cargar los modelos relacionados
         $proveedores = Proveedor::all();
         $estados = Estado::all();
-        
+
         // Agregar estados disponibles a cada compra
         foreach ($items as $item) {
             $item->avaibleStates = $this->getAvailableStates($item->estado_id);
         }
-        
+
         $otherModels = [
             'proveedores' => $proveedores,
             'estados' => $estados,
@@ -51,12 +51,12 @@ class CompraController extends Controller
         // Cargar los modelos relacionados para mostrar en el formulario
         $proveedores = Proveedor::where('estado', 1)->get();
         $estados = Estado::all();
-        
+
         $otherModels = [
             'proveedores' => $proveedores,
             'estados' => $estados
         ];
-        
+
         // Generar código para la nueva compra
         $ultimoCodigoCompra = Compra::orderBy('codigo', 'desc')->first()->codigo ?? 'C000';
         $codigoGenerado = 'C' . str_pad((int)substr($ultimoCodigoCompra, 1) + 1, 3, '0', STR_PAD_LEFT);
@@ -86,11 +86,11 @@ class CompraController extends Controller
     public function edit($id)
     {
         $item = Compra::find($id);
-        
+
         // Cargar los modelos relacionados para mostrar en el formulario
         $proveedores = Proveedor::where('estado', 1)->get();
         $estados = Estado::all();
-        
+
         $otherModels = [
             'proveedores' => $proveedores,
             'estados' => $estados
@@ -118,7 +118,7 @@ class CompraController extends Controller
             return redirect()->route('compras.index')->with('error', 'Ocurrió un error al actualizar la compra');
         }
     }
-    
+
     public function updateEstado(Request $request, $id)
     {
         try {
@@ -143,7 +143,7 @@ class CompraController extends Controller
                 ->with('error', 'Ocurrió un error al actualizar el estado');
         }
     }
-    
+
     private function validateAndProcessEstado($item, $nuevoEstado): array
     {
         $availableStates = $this->getAvailableStates($item->estado_id);
@@ -177,7 +177,7 @@ class CompraController extends Controller
 
         return $result;
     }
-    
+
     private function actualizarStockCompra($compra): array
     {
         foreach ($compra->detalleCompras as $detalle) {
@@ -201,5 +201,12 @@ class CompraController extends Controller
         ];
 
         return isset($stateTransitions[$currentStateId]) ? $stateTransitions[$currentStateId] : [];
+    }
+
+    public function pdf($id)
+    {
+        $compra = Compra::with(['proveedor', 'detalleCompras.producto'])->findOrFail($id);
+        $pdf = Pdf::loadView('compras.pdf.compra', compact('compra'));
+        return $pdf->download('compra_' . $compra->codigo . '.pdf');
     }
 }

@@ -15,6 +15,9 @@
             <a href="{{ route('compras.index') }}" class="ml-2 btn btn-secondary">
                 <i class="fas fa-arrow-left"></i> Volver
             </a>
+            <a href="{{ route('compras.pdf', $item->id) }}" class="ml-2 btn btn-danger" target="_blank">
+                <i class="fas fa-file-pdf"></i> PDF
+            </a>
         </div>
     </div>
 @stop
