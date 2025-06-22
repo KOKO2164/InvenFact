@@ -6,6 +6,7 @@ use App\Models\Cliente;
 use App\Models\Estado;
 use App\Models\Pedido;
 use App\Models\Producto;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
@@ -28,18 +29,18 @@ class PedidoController extends Controller
             $searchValue = $request->input('codigo');
             $query->where('codigo', 'like', "%$searchValue%");
         }
-        
+
         $items = $query->paginate(10);
-        
+
         // Cargar los modelos relacionados
         $clientes = Cliente::all();
         $estados = Estado::all();
-        
+
         // Agregar estados disponibles a cada pedido
         foreach ($items as $item) {
             $item->avaibleStates = $this->getAvailableStates($item->estado_id);
         }
-        
+
         $otherModels = [
             'clientes' => $clientes,
             'estados' => $estados,
@@ -53,12 +54,12 @@ class PedidoController extends Controller
         // Cargar los modelos relacionados para mostrar en el formulario
         $clientes = Cliente::where('estado', 1)->get();
         $estados = Estado::all();
-        
+
         $otherModels = [
             'clientes' => $clientes,
             'estados' => $estados
         ];
-        
+
         // Generar código para el nuevo pedido
         $ultimoCodigoPedido = Pedido::orderBy('codigo', 'desc')->first()->codigo ?? 'P000';
         $codigoGenerado = 'P' . str_pad((int)substr($ultimoCodigoPedido, 1) + 1, 3, '0', STR_PAD_LEFT);
@@ -88,11 +89,11 @@ class PedidoController extends Controller
     public function edit($id)
     {
         $item = Pedido::find($id);
-        
+
         // Cargar los modelos relacionados para mostrar en el formulario
         $clientes = Cliente::where('estado', 1)->get();
         $estados = Estado::all();
-        
+
         $otherModels = [
             'clientes' => $clientes,
             'estados' => $estados
@@ -120,7 +121,7 @@ class PedidoController extends Controller
             return redirect()->route('pedidos.index')->with('error', 'Ocurrió un error al actualizar el pedido');
         }
     }
-    
+
     public function updateEstado(Request $request, $id)
     {
         try {
@@ -145,7 +146,7 @@ class PedidoController extends Controller
                 ->with('error', 'Ocurrió un error al actualizar el estado');
         }
     }
-    
+
     private function validateAndProcessEstado($item, $nuevoEstado): array
     {
         $availableStates = $this->getAvailableStates($item->estado_id);
@@ -179,7 +180,7 @@ class PedidoController extends Controller
 
         return $result;
     }
-    
+
     private function actualizarStockPedido($pedido): array
     {
         foreach ($pedido->detallePedidos as $detalle) {
@@ -210,5 +211,12 @@ class PedidoController extends Controller
         ];
 
         return isset($stateTransitions[$currentStateId]) ? $stateTransitions[$currentStateId] : [];
+    }
+
+    public function pdf($id)
+    {
+        $pedido = Pedido::with(['cliente', 'detallePedidos.producto'])->findOrFail($id);
+        $pdf = Pdf::loadView('pedidos.pdf.pedido', compact('pedido'));
+        return $pdf->download('pedido_' . $pedido->codigo . '.pdf');
     }
 }

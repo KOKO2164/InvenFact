@@ -71,6 +71,7 @@ Route::post('/pedidos/{pedido}/detalle', [DetallePedidoController::class, 'store
 Route::patch('/pedidos/{pedido}/detalle', [DetallePedidoController::class, 'update'])->name('detalles-pedidos.update');
 Route::delete('/pedidos/{pedido}/detalle', [DetallePedidoController::class, 'destroy'])->name('detalles-pedidos.destroy');
 Route::patch('/pedidos/{pedido}/update-estado', [PedidoController::class, 'updateEstado'])->name('pedidos.update-estado')->middleware('auth');
+Route::get('/pedidos/{item}/pdf', [PedidoController::class, 'pdf'])->name('pedidos.pdf')->middleware('auth');
 
 Route::post('/obtener-productos', function (\Illuminate\Http\Request $request) {
     $request->validate([
